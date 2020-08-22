@@ -1,0 +1,2 @@
+C:\JFLEX\bin\jflex -d src\generated srcjflexcup\Lexer.flex
+java -jar C:\CUP\java-cup-11b.jar -destdir src\generated srcjflexcup\Parser.cup
