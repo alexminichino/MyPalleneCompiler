@@ -1,5 +1,7 @@
 package syntax;
 
+import nodetype.CompositeNodeType;
+import nodetype.NodeType;
 import syntax.expression.Id;
 import syntax.statements.Statement;
 import syntax.types.Type;
@@ -79,6 +81,18 @@ public class Function extends ASTNode {
     @Override
     public <T, P> T accept(Visitor<T, P> visitor, P arg) {
         return visitor.visit(this, arg);
+    }
+
+    public CompositeNodeType domain() {
+        CompositeNodeType compositeNodeType = new CompositeNodeType(new ArrayList<>());
+        this.getParDecls().forEach(parDecl -> {
+            compositeNodeType.addNodeType(parDecl.getType().typeFactory());
+        });
+        return compositeNodeType;
+    }
+
+    public NodeType codomain() {
+        return this.getType().typeFactory();
     }
 
 }

@@ -1,21 +1,20 @@
 package nodetype;
 
 public class FunctionNodeType implements NodeType{
-    private NodeType paramsType;
-    private CompositeNodeType compositeNodeType;
+    private NodeType nodeType ;
+    private CompositeNodeType paramsType ;
 
-
-    public FunctionNodeType(NodeType paramsType, CompositeNodeType compositeNodeType) {
+    public FunctionNodeType(NodeType nodeType, CompositeNodeType paramsType) {
+        this.nodeType = nodeType;
         this.paramsType = paramsType;
-        this.compositeNodeType = compositeNodeType;
     }
 
-    public NodeType getParamsType() {
+    public NodeType getNodeType() {
+        return nodeType;
+    }
+
+    public CompositeNodeType getParamsType() {
         return paramsType;
-    }
-
-    public CompositeNodeType getCompositeNodeType() {
-        return compositeNodeType;
     }
 
     @Override

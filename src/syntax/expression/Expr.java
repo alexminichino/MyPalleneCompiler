@@ -1,9 +1,11 @@
 package syntax.expression;
 
+import nodetype.NodeType;
 import syntax.ASTNode;
 import visitor.Visitor;
 
 public abstract class Expr extends ASTNode {
+    NodeType type;
     /**
      * Initialize a new generic Expr AST node.
      *
@@ -12,5 +14,13 @@ public abstract class Expr extends ASTNode {
      */
     public Expr(int leftPosition, int rightPosition) {
         super(leftPosition, rightPosition);
+    }
+
+    public NodeType getNodeType() {
+        return type;
+    }
+
+    public void setType(NodeType type) {
+        this.type = type;
     }
 }

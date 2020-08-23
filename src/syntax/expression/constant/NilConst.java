@@ -9,6 +9,7 @@ import javax.lang.model.type.NullType;
 public class NilConst extends Expr implements Leaf<NullType> {
 
 
+
     /**
      * @param leftPosition  the left position
      * @param rightPosition the right position
