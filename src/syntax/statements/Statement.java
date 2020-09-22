@@ -1,6 +1,7 @@
 package syntax.statements;
 
 import syntax.ASTNode;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public abstract class Statement  extends ASTNode {
     /**
@@ -9,7 +10,7 @@ public abstract class Statement  extends ASTNode {
      * @param leftPosition  the left position
      * @param rightPosition the right position
      */
-    public Statement(int leftPosition, int rightPosition) {
+    public Statement(Location leftPosition, Location rightPosition) {
         super(leftPosition, rightPosition);
     }
 }

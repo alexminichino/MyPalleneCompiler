@@ -26,9 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
-/**
- * TypeCheckingVisitor
- */
+
+
 public class TypeCheckerConcreteVisitor implements Visitor<NodeType, SymbolTable> {
 
   private ErrorHandler errorHandler;
@@ -65,17 +64,17 @@ public class TypeCheckerConcreteVisitor implements Visitor<NodeType, SymbolTable
   @Override
   public NodeType visit(Function function, SymbolTable arg) {
     this.lastTypeToReturn = function.codomain();
-    this.returnedValuesPerId.putIfAbsent(function.getId().getValue(), new ArrayList<>());
-    this.lastFunction = function.getId().getValue();
+    this.returnedValuesPerId.putIfAbsent(function.getVariable().getValue(), new ArrayList<>());
+    this.lastFunction = function.getVariable().getValue();
 
-    NodeType functionType = function.getId().accept(this, arg);
+    NodeType functionType = function.getVariable().accept(this, arg);
     arg.enterInScope();
     function.getParDecls().forEach(this.typeCheck(arg));
     function.getStatements().forEach(this.typeCheck(arg));
     arg.exitFromScope();
 
-    if((function.codomain().toString() != "void" && this.returnedValuesPerId.get(function.getId().getValue()).isEmpty())) {
-      errorHandler.adderror(new ErrorItem("Function "+ function.getId().getValue()+ " must have return statement!", function));
+    if((function.codomain().toString() != "void" && this.returnedValuesPerId.get(function.getVariable().getValue()).isEmpty())) {
+      errorHandler.adderror(new ErrorItem("Function "+ function.getVariable().getValue()+ " must have return statement!", function));
     }
     this.lastTypeToReturn = null;
 
@@ -85,14 +84,14 @@ public class TypeCheckerConcreteVisitor implements Visitor<NodeType, SymbolTable
   @Override
   public NodeType visit(ParDecl parDecl, SymbolTable arg) {
     NodeType parDeclType = parDecl.getType().accept(this, arg);
-    parDecl.getId().accept(this, arg);
+    parDecl.getVariable().accept(this, arg);
     return parDeclType;
   }
 
   @Override
   public NodeType visit(VarDecl varDecl, SymbolTable arg) {
     NodeType varDeclType = varDecl.getType().accept(this, arg);
-    varDecl.getId().accept(this, arg);
+    varDecl.getVariable().accept(this, arg);
     if(varDecl.getVarInitValue() != null) {
       varDecl.getVarInitValue().accept(this, arg);
     }
@@ -451,7 +450,7 @@ public class TypeCheckerConcreteVisitor implements Visitor<NodeType, SymbolTable
 
   @Override
   public NodeType visit(Id id, SymbolTable arg) {
-    NodeType iType = arg.getEntry(id.getValue()).get().getNodeType();
+    NodeType iType = arg.getTableEntryIfExists(id.getValue()).get().getNodeType();
     id.setType(iType);
     return iType;
   }
@@ -476,4 +475,8 @@ public class TypeCheckerConcreteVisitor implements Visitor<NodeType, SymbolTable
     return PrimitiveNodeType.NIL;
   }
 
+  @Override
+  public NodeType visit(Variable variable, SymbolTable arg) {
+    return arg.getTableEntryIfExists(variable.getValue()).get().getNodeType();
+  }
 }

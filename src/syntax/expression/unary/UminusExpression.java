@@ -2,6 +2,7 @@ package syntax.expression.unary;
 
 import syntax.expression.Expr;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class UminusExpression extends UnaryOperation{
     /**
@@ -11,7 +12,7 @@ public class UminusExpression extends UnaryOperation{
      * @param rightPosition the right position
      * @param expr          the expression
      */
-    public UminusExpression(int leftPosition, int rightPosition, Expr expr) {
+    public UminusExpression(Location leftPosition, Location rightPosition, Expr expr) {
         super(leftPosition, rightPosition, expr);
     }
 

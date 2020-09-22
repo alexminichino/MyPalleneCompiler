@@ -3,31 +3,32 @@ package syntax;
 import syntax.expression.Id;
 import syntax.types.Type;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class VarDecl extends ASTNode{
-    private Id id;
+    private Variable variable;
     private Type type;
     private VarInitValue varInitValue;
 
     /**
      * @param leftPosition  the left position
      * @param rightPosition the right position
-     * @param id id
+     * @param variable the variable
      * @param type type
      * @param varInitValue initial value
      */
-    public VarDecl(int leftPosition, int rightPosition, Id id, Type type, VarInitValue varInitValue) {
+    public VarDecl(Location leftPosition, Location rightPosition, Variable variable, Type type, VarInitValue varInitValue) {
         super(leftPosition, rightPosition);
-        this.id = id;
+        this.variable = variable;
         this.type = type;
         this.varInitValue = varInitValue;
     }
 
     /**
-     * @return the id
+     * @return the variable
      */
-    public Id getId() {
-        return id;
+    public Variable getVariable() {
+        return variable;
     }
 
     /**

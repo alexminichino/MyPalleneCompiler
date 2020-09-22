@@ -25,4 +25,13 @@ public class SymbolTableEntry {
     public String getLexeme() {
         return lexeme;
     }
+
+    @Override
+    public String toString() {
+        return "SymbolTableEntry{" +
+                "nodeTipology=" + nodeTipology +
+                ", nodeType=" + nodeType +
+                ", lexeme='" + lexeme + '\'' +
+                '}';
+    }
 }

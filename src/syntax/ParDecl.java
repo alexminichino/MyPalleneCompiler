@@ -3,28 +3,29 @@ package syntax;
 import syntax.expression.Id;
 import syntax.types.Type;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class ParDecl extends ASTNode{
-    private Id id;
+    private Variable variable;
     private Type type;
 
     /**
      * @param leftPosition  the left position
      * @param rightPosition the right position
-     * @param id id
+     * @param variable the variable
      * @param type type
      */
-    public ParDecl(int leftPosition, int rightPosition, Id id, Type type) {
+    public ParDecl(Location leftPosition, Location rightPosition, Variable variable, Type type) {
         super(leftPosition, rightPosition);
-        this.id = id;
+        this.variable= variable;
         this.type = type;
     }
 
     /**
-     * @return the id
+     * @return the variable
      */
-    public Id getId() {
-        return id;
+    public Variable getVariable() {
+        return variable;
     }
 
     /**

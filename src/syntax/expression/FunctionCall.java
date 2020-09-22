@@ -3,6 +3,7 @@ package syntax.expression;
 import visitor.Visitor;
 
 import java.util.ArrayList;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class FunctionCall extends Expr {
     private Id id;
@@ -14,7 +15,7 @@ public class FunctionCall extends Expr {
      * @param id id
      * @param exprs  expressions list
      */
-    public FunctionCall(int leftPosition, int rightPosition, Id id, ArrayList<Expr> exprs) {
+    public FunctionCall(Location leftPosition, Location rightPosition, Id id, ArrayList<Expr> exprs) {
         super(leftPosition, rightPosition);
         this.id = id;
         this.exprs = exprs;

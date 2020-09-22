@@ -4,6 +4,7 @@ import syntax.VarDecl;
 import visitor.Visitor;
 
 import java.util.ArrayList;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class LocalStatement extends Statement {
     private ArrayList<VarDecl> varDecls;
@@ -15,7 +16,7 @@ public class LocalStatement extends Statement {
      * @param varDecls
      * @param statements
      */
-    public LocalStatement(int leftPosition, int rightPosition, ArrayList<VarDecl> varDecls, ArrayList<Statement> statements) {
+    public LocalStatement(Location leftPosition, Location rightPosition, ArrayList<VarDecl> varDecls, ArrayList<Statement> statements) {
         super(leftPosition, rightPosition);
         this.varDecls = varDecls;
         this.statements = statements;

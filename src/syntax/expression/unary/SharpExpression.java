@@ -2,6 +2,7 @@ package syntax.expression.unary;
 
 import syntax.expression.Expr;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class SharpExpression extends UnaryOperation{
     /**
@@ -11,7 +12,7 @@ public class SharpExpression extends UnaryOperation{
      * @param rightPosition the right position
      * @param expr          the expression
      */
-    public SharpExpression(int leftPosition, int rightPosition, Expr expr) {
+    public SharpExpression(Location leftPosition, Location rightPosition, Expr expr) {
         super(leftPosition, rightPosition, expr);
     }
 

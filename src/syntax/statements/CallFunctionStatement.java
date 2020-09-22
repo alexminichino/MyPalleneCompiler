@@ -5,6 +5,7 @@ import syntax.expression.Id;
 import visitor.Visitor;
 
 import java.util.ArrayList;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class CallFunctionStatement extends Statement {
     private Id id;
@@ -16,7 +17,7 @@ public class CallFunctionStatement extends Statement {
      * @param id
      * @param expressionsParams
      */
-    public CallFunctionStatement(int leftPosition, int rightPosition, Id id, ArrayList<Expr> expressionsParams) {
+    public CallFunctionStatement(Location leftPosition, Location rightPosition, Id id, ArrayList<Expr> expressionsParams) {
         super(leftPosition, rightPosition);
         this.id = id;
         this.expressionsParams = expressionsParams;

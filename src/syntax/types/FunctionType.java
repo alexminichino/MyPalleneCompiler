@@ -6,6 +6,8 @@ import nodetype.NodeType;
 import visitor.Visitor;
 
 import java.util.ArrayList;
+import java.util.StringJoiner;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class FunctionType extends Type{
     private ArrayList<Type> paramTypes;
@@ -18,7 +20,7 @@ public class FunctionType extends Type{
      * @param paramTypes
      * @param returnType
      */
-    public FunctionType(int leftPosition, int rightPosition, ArrayList<Type> paramTypes, Type returnType) {
+    public FunctionType(Location leftPosition, Location rightPosition, ArrayList<Type> paramTypes, Type returnType) {
         super(leftPosition, rightPosition);
         this.paramTypes = paramTypes;
         this.returnType = returnType;
@@ -30,7 +32,7 @@ public class FunctionType extends Type{
      * @param rightPosition
      * @param returnType
      */
-    public FunctionType(int leftPosition, int rightPosition, Type returnType) {
+    public FunctionType(Location leftPosition, Location rightPosition, Type returnType) {
         super(leftPosition, rightPosition);
         this.paramTypes = paramTypes;
         this.returnType = returnType;
@@ -76,5 +78,18 @@ public class FunctionType extends Type{
 
     public NodeType codomain() {
         return this.getReturnType().typeFactory();
+    }
+
+    @Override
+    public String getCType() {
+        StringJoiner joiner = new StringJoiner(", ");
+        this.getParamTypes().stream().map((Type t) -> {
+            if(t instanceof ArrayType) {
+                return t.getCType() + "[]";
+            } else {
+                return t.getCType();
+            }
+        }).forEach(joiner::add);
+        return String.format("%s (*%s) (%s)", this.getReturnType().typeFactory(), "%s", joiner.toString());
     }
 }

@@ -1,5 +1,7 @@
 package errors;
 
+import generated.Parser;
+
 import java.util.Stack;
 
 public class ErrorHandler {
@@ -20,10 +22,14 @@ public class ErrorHandler {
     public String getErrorStackTrace(){
         String out = "";
         for(ErrorItem error : errorItems ){
-            out+="Error -> "+ error.getMessage();
-            out+="Related at "+ error.getErrorNode().getClass().getSimpleName().toString();
+            out+="Error "+(errorItems.indexOf(error)+1)+" -> "+ error.getMessage();
+            out+=" At LINE: "+ error.getErrorNode().getLeftPosition().getLine()+ " and COLUMN: " + error.getErrorNode().getRightPosition().getColumn();
+            out+=" Related at "+ error.getErrorNode().getClass().getSimpleName().toString();
             out+=" Node \n";
         }
         return out;
     }
+     public boolean hasErrors(){
+        return errorItems.size() > 0;
+     }
 }

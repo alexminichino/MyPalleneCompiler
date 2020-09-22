@@ -1,6 +1,7 @@
 package syntax.expression;
 
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class ArrayReadElement extends Expr{
     private Expr arrayAssignExpr;
@@ -12,7 +13,7 @@ public class ArrayReadElement extends Expr{
      * @param arrayAssignExpr expression of assignment
      * @param indexExpression
      */
-    public ArrayReadElement(int leftPosition, int rightPosition, Expr arrayAssignExpr, Expr indexExpression) {
+    public ArrayReadElement(Location leftPosition, Location rightPosition, Expr arrayAssignExpr, Expr indexExpression) {
         super(leftPosition, rightPosition);
         this.arrayAssignExpr = arrayAssignExpr;
         this.indexExpression = indexExpression;

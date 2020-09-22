@@ -4,6 +4,7 @@ import syntax.expression.Id;
 import visitor.Visitor;
 
 import java.util.ArrayList;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class ReadStatement extends Statement {
     private ArrayList<Id> variables;
@@ -13,7 +14,7 @@ public class ReadStatement extends Statement {
      * @param rightPosition the right position
      * @param variables
      */
-    public ReadStatement(int leftPosition, int rightPosition, ArrayList<Id> variables) {
+    public ReadStatement(Location leftPosition, Location rightPosition, ArrayList<Id> variables) {
         super(leftPosition, rightPosition);
         this.variables = variables;
     }

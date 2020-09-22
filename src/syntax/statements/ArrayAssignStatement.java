@@ -2,6 +2,7 @@ package syntax.statements;
 
 import syntax.expression.Expr;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class ArrayAssignStatement extends Statement {
     private Expr arrayExpression;
@@ -15,7 +16,7 @@ public class ArrayAssignStatement extends Statement {
      * @param arrayPointExpression
      * @param assignExpression
      */
-    public ArrayAssignStatement(int leftPosition, int rightPosition, Expr arrayExpression, Expr arrayPointExpression, Expr assignExpression) {
+    public ArrayAssignStatement(Location leftPosition, Location rightPosition, Expr arrayExpression, Expr arrayPointExpression, Expr assignExpression) {
         super(leftPosition, rightPosition);
         this.arrayExpression = arrayExpression;
         this.arrayPointExpression = arrayPointExpression;

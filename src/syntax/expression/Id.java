@@ -2,6 +2,7 @@ package syntax.expression;
 
 import syntax.Leaf;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class Id extends Expr implements Leaf<String> {
     private String name;
@@ -13,7 +14,7 @@ public class Id extends Expr implements Leaf<String> {
      * @param rightPosition the right position
      * @param name
      */
-    public Id(int leftPosition, int rightPosition, String name) {
+    public Id(Location leftPosition, Location rightPosition, String name) {
         super(leftPosition, rightPosition);
         this.name = name;
     }

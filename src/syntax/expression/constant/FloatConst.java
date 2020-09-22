@@ -3,6 +3,7 @@ package syntax.expression.constant;
 import syntax.Leaf;
 import syntax.expression.Expr;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class FloatConst extends Expr implements Leaf<Float> {
     private float value;
@@ -12,7 +13,7 @@ public class FloatConst extends Expr implements Leaf<Float> {
      * @param rightPosition the right position
      * @param value the value
      */
-    public FloatConst(int leftPosition, int rightPosition, float value) {
+    public FloatConst(Location leftPosition, Location rightPosition, float value) {
         super(leftPosition, rightPosition);
         this.value = value;
     }

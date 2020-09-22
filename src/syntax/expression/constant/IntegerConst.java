@@ -3,6 +3,7 @@ package syntax.expression.constant;
 import syntax.Leaf;
 import syntax.expression.Expr;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class IntegerConst extends Expr implements Leaf<Integer> {
     private int value;
@@ -12,7 +13,7 @@ public class IntegerConst extends Expr implements Leaf<Integer> {
      * @param rightPosition the right position
      * @param value the value
      */
-    public IntegerConst(int leftPosition, int rightPosition, int value) {
+    public IntegerConst(Location leftPosition, Location rightPosition, int value) {
         super(leftPosition, rightPosition);
         this.value = value;
     }

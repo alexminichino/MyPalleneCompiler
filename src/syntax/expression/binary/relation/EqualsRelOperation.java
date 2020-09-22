@@ -3,6 +3,7 @@ package syntax.expression.binary.relation;
 import syntax.expression.Expr;
 import syntax.expression.binary.BinaryOperation;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class EqualsRelOperation extends BinaryOperation {
     /**
@@ -13,7 +14,7 @@ public class EqualsRelOperation extends BinaryOperation {
      * @param leftOperand   the left operand
      * @param rightOperand  the right operand
      */
-    public EqualsRelOperation(int leftPosition, int rightPosition, Expr leftOperand, Expr rightOperand) {
+    public EqualsRelOperation(Location leftPosition, Location rightPosition, Expr leftOperand, Expr rightOperand) {
         super(leftPosition, rightPosition, leftOperand, rightOperand);
     }
     /**

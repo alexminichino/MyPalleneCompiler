@@ -4,6 +4,7 @@ import nodetype.ArrayNodeType;
 import nodetype.NodeType;
 import nodetype.PrimitiveNodeType;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class ArrayType extends Type{
 
@@ -14,7 +15,7 @@ public class ArrayType extends Type{
      * @param rightPosition
      * @param type
      */
-    public ArrayType(int leftPosition, int rightPosition, Type type) {
+    public ArrayType(Location leftPosition, Location rightPosition, Type type) {
         super(leftPosition, rightPosition);
         this.type = type;
     }
@@ -25,6 +26,11 @@ public class ArrayType extends Type{
     public Type getType() {
         return type;
     }
+
+    public NodeType getElementsType() {
+        return this.type.typeFactory();
+    }
+
 
     /**
      * Implement interface method
@@ -37,6 +43,22 @@ public class ArrayType extends Type{
     @Override
     public <T, P> T accept(Visitor<T, P> visitor, P arg) {
         return visitor.visit(this, arg);
+    }
+
+    @Override
+    public String getCType() {
+        switch((PrimitiveNodeType) this.getElementsType()){
+            case STRING:
+                return "char *";
+            case FLOAT:
+                return "float";
+            case BOOL:
+                return "bool";
+            case INT:
+                return "int";
+            default:
+                return "";
+        }
     }
 
     @Override

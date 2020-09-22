@@ -2,6 +2,7 @@ package syntax;
 
 import syntax.expression.Expr;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class VarInitValue extends ASTNode{
     private Expr expression;
@@ -11,7 +12,7 @@ public class VarInitValue extends ASTNode{
      * @param rightPosition the right position
      * @param expression the expression
      */
-    public VarInitValue(int leftPosition, int rightPosition, Expr expression) {
+    public VarInitValue(Location leftPosition, Location rightPosition, Expr expression) {
         super(leftPosition, rightPosition);
         this.expression = expression;
     }

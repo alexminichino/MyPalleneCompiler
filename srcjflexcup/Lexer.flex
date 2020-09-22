@@ -32,7 +32,7 @@ import lexical.StringTable;
     private StringTable stringTable;
     private ComplexSymbolFactory complexSymbolFactory;
 
-    private Symbol createToken(int type) {
+    private Symbol createToken(String name, int type) {
        String name = ParserSym.terminalNames[type];
        return complexSymbolFactory.newSymbol(name, type, new Location(yyline + 1, yycolumn + 1 - yylength()), new Location(yyline + 1, yycolumn + 1));
     }
@@ -61,7 +61,7 @@ import lexical.StringTable;
 %}
 
 %eofval{
-	return createToken(ParserSym.EOF);
+	return createToken("EOF",ParserSym.EOF);
 %eofval}
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]

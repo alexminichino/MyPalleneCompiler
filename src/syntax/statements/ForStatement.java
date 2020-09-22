@@ -1,14 +1,16 @@
 package syntax.statements;
 
+import syntax.Variable;
 import syntax.expression.Expr;
 import syntax.expression.Id;
 import visitor.Visitor;
 
 import java.util.ArrayList;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class ForStatement  extends  Statement{
 
-    private Id id;
+    private Variable variable;
     private Expr initialConditionExpression;
     private Expr loopConditionExpression;
     private ArrayList<Statement> statements;
@@ -16,14 +18,14 @@ public class ForStatement  extends  Statement{
     /**
      * @param leftPosition  the left position
      * @param rightPosition the right position
-     * @param id
+     * @param variable the id
      * @param initialConditionExpression
      * @param loopConditionExpression
      * @param statements
      */
-    public ForStatement(int leftPosition, int rightPosition, Id id, Expr initialConditionExpression, Expr loopConditionExpression, ArrayList<Statement> statements) {
+    public ForStatement(Location leftPosition, Location rightPosition, Variable variable, Expr initialConditionExpression, Expr loopConditionExpression, ArrayList<Statement> statements) {
         super(leftPosition, rightPosition);
-        this.id = id;
+        this.variable = variable;
         this.initialConditionExpression = initialConditionExpression;
         this.loopConditionExpression = loopConditionExpression;
         this.statements = statements;
@@ -32,8 +34,8 @@ public class ForStatement  extends  Statement{
     /**
      * @return
      */
-    public Id getId() {
-        return id;
+    public Variable getVariable() {
+        return variable;
     }
 
     /**

@@ -1,5 +1,7 @@
 package nodetype;
 
+import java.util.Objects;
+
 public class ArrayNodeType implements NodeType{
     private PrimitiveNodeType typeElement;
 
@@ -11,6 +13,26 @@ public class ArrayNodeType implements NodeType{
 
     public PrimitiveNodeType getTypeElement() {
         return typeElement;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }else if (obj == null) {
+            return false;
+        } else if (getClass() != obj.getClass()) {
+            return false;
+        }
+        ArrayNodeType other = (ArrayNodeType) obj;
+        return Objects.equals(typeElement, other.typeElement);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{" + typeElement.toString() + "}");
+        return sb.toString();
     }
 
 

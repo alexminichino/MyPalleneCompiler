@@ -4,6 +4,7 @@ import syntax.expression.Expr;
 import visitor.Visitor;
 
 import java.util.ArrayList;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class WriteStatement extends Statement{
     private ArrayList<Expr> expressions;
@@ -13,7 +14,7 @@ public class WriteStatement extends Statement{
      * @param rightPosition the right position
      * @param expressions
      */
-    public WriteStatement(int leftPosition, int rightPosition, ArrayList<Expr> expressions) {
+    public WriteStatement(Location leftPosition, Location rightPosition, ArrayList<Expr> expressions) {
         super(leftPosition, rightPosition);
         this.expressions = expressions;
     }

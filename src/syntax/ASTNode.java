@@ -1,10 +1,11 @@
 package syntax;
 
+import java_cup.runtime.ComplexSymbolFactory.Location;
 import visitor.Element;
 
 public abstract class ASTNode implements Element{
-    private int leftPosition;
-    private int rightPosition;
+    private Location leftPosition;
+    private Location rightPosition;
 
     /**
     * Initialize a new generic AST node.
@@ -12,7 +13,7 @@ public abstract class ASTNode implements Element{
     * @param leftPosition  the left position
     * @param rightPosition the right position
     */
-    public ASTNode(int leftPosition, int rightPosition) {
+    public ASTNode(Location leftPosition, Location rightPosition) {
         this.leftPosition = leftPosition;
         this.rightPosition = rightPosition;
     }
@@ -20,14 +21,14 @@ public abstract class ASTNode implements Element{
     /**
     * @return The left position
     */
-    public int getLeftPosition() {
+    public Location getLeftPosition() {
         return leftPosition;
     }
 
     /**
     * @return The right position
     */
-    public int getRightPosition() {
+    public Location getRightPosition() {
         return rightPosition;
     }
 }

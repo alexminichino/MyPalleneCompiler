@@ -3,6 +3,7 @@ package syntax.expression;
 import nodetype.NodeType;
 import syntax.ASTNode;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public abstract class Expr extends ASTNode {
     NodeType type;
@@ -12,7 +13,7 @@ public abstract class Expr extends ASTNode {
      * @param leftPosition  the left position
      * @param rightPosition the right position
      */
-    public Expr(int leftPosition, int rightPosition) {
+    public Expr(Location leftPosition, Location rightPosition) {
         super(leftPosition, rightPosition);
     }
 

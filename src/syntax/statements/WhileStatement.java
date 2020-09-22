@@ -4,6 +4,7 @@ import syntax.expression.Expr;
 import visitor.Visitor;
 
 import java.util.ArrayList;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class WhileStatement extends Statement {
     private Expr conditionExpression;
@@ -16,7 +17,7 @@ public class WhileStatement extends Statement {
      * @param conditionExpression
      * @param statements
      */
-    public WhileStatement(int leftPosition, int rightPosition, Expr conditionExpression, ArrayList<Statement> statements) {
+    public WhileStatement(Location leftPosition, Location rightPosition, Expr conditionExpression, ArrayList<Statement> statements) {
         super(leftPosition, rightPosition);
         this.conditionExpression = conditionExpression;
         this.statements = statements;

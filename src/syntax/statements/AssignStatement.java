@@ -3,6 +3,7 @@ package syntax.statements;
 import syntax.expression.Expr;
 import syntax.expression.Id;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class AssignStatement extends Statement {
     private Id id;
@@ -14,7 +15,7 @@ public class AssignStatement extends Statement {
      * @param id
      * @param expression
      */
-    public AssignStatement(int leftPosition, int rightPosition, Id id, Expr expression) {
+    public AssignStatement(Location leftPosition, Location rightPosition, Id id, Expr expression) {
         super(leftPosition, rightPosition);
         this.id = id;
         this.expression = expression;

@@ -1,6 +1,7 @@
 /* Preliminaries to set up and use the scanner.  */
 package generated;
 import java_cup.runtime.*;
+import java_cup.runtime.ComplexSymbolFactory.ComplexSymbol;
 import java.util.*;
 import syntax.*;
 import syntax.statements.*;
@@ -16,14 +17,18 @@ class Parser;
 
 parser code{:
 
-public void report_error(String msg, Object info) {
-  Symbol sym = (Symbol)info;
-  System.out.println(msg + ": " + symbl_name_from_id(sym.sym));
+public void report_error(String message, Object info) {
+  if (info instanceof ComplexSymbol) {
+     ComplexSymbol cs = (ComplexSymbol)info;
+     String msg = String.format("%s for input symbol %s (L:%s, C:%s)", message, cs.getName(), cs.getLeft().getLine(), cs.getRight().getColumn());
+     System.err.println(msg);
+   } else {
+     System.err.println(message);
+   }
+
 }
 
-public void syntax_error(Symbol cur_token) {
-  System.out.println("Syntax error: " + symbl_name_from_id(cur_token.sym));
-}
+
 
 :}
 
@@ -106,12 +111,12 @@ precedence left UMINUS, NOT, COMMA, SHARP;
 
 /* The grammar */
 
-/* Implicit left (eg functions_left) arg indicates the character number from the start of file, this is very useful for error checking */
+/* Implicit left (eg functions_xleft) arg indicates the character number from the start of file, this is very useful for error checking */
 
 /* Program : Global Functions */
 Program ::= Global:global_ Functions:functions_
             {:
-                RESULT = new Program(functions_left, functions_right, global_, functions_);
+                RESULT = new Program(functions_xleft, functions_xright, global_, functions_);
             :}
 ;
 
@@ -120,7 +125,7 @@ Program ::= Global:global_ Functions:functions_
 
 Global ::=  GLOBAL:global_ Var_decls:var_decls_ END
             {:
-                RESULT = new Global(global_left, global_right, var_decls_ );
+                RESULT = new Global(global_xleft, global_xright, var_decls_ );
             :}
             |
             //Epsilon
@@ -130,14 +135,14 @@ Global ::=  GLOBAL:global_ Var_decls:var_decls_ END
 
 Functions ::=  Def_fun:def_fun_ Functions:functions_
             {:
-                functions_.add(def_fun_);
+                functions_.add(0, def_fun_);
                 RESULT = functions_;
             :}
             |
             Def_fun:def_fun_
             {:
                 RESULT= new ArrayList<Function>();
-                RESULT.add(def_fun_);
+                RESULT.add(0, def_fun_);
             :}
 ;
 /* Def_fun : FUNCTION ID LPAR Par_decls RPAR COLON Type Statements END
@@ -145,12 +150,12 @@ Functions ::=  Def_fun:def_fun_ Functions:functions_
 
 Def_fun ::=  FUNCTION:function_ ID:id_ LPAR Par_decls:par_decls_ RPAR COLON Type:type_ Statements:statements_ END
              {:
-                RESULT = new Function(function_left, function_right, new Id(id_left, id_right, id_), par_decls_, type_, statements_);
+                RESULT = new Function(function_xleft, function_xright, new Variable(id_xleft, id_xright, id_), par_decls_, type_, statements_);
              :}
              |
              FUNCTION:function_ ID:id_ LPAR RPAR COLON Type:type_ Statements:statements_ END
              {:
-                RESULT = new Function(function_left, function_right, new Id(id_left, id_right, id_), type_, statements_);
+                RESULT = new Function(function_xleft, function_xright, new Variable(id_xleft, id_xright, id_), type_, statements_);
              :}
 ;
 /* Par_decls : ID COLON Type COMMA Par_decls
@@ -158,14 +163,14 @@ Def_fun ::=  FUNCTION:function_ ID:id_ LPAR Par_decls:par_decls_ RPAR COLON Type
 
 Par_decls ::= ID:id_ COLON Type:type_ COMMA Par_decls:par_decls_
               {:
-                par_decls_.add(new ParDecl(id_left, id_right, new Id(id_left, id_right, id_), type_));
+                par_decls_.add(0, new ParDecl(id_xleft, id_xright, new Variable(id_xleft, id_xright, id_), type_));
                 RESULT = par_decls_;
               :}
               |
               ID:id_ COLON Type:type_
               {:
                 RESULT = new ArrayList<ParDecl>();
-                RESULT.add(new ParDecl(id_left, id_right, new Id(id_left, id_right, id_), type_));
+                RESULT.add(0, new ParDecl(id_xleft, id_xright, new Variable(id_xleft, id_xright, id_), type_));
               :}
 ;
 /* Var_decls : ID COLON Type Var_init_value SEMI Var_decls
@@ -173,14 +178,14 @@ Par_decls ::= ID:id_ COLON Type:type_ COMMA Par_decls:par_decls_
 
 Var_decls ::= Var_decls:var_decls_ SEMI ID:id_ COLON Type:type_ Var_init_value:var_init_value_
               {:
-                var_decls_.add(new VarDecl(id_left, id_right, new Id(id_left, id_right, id_), type_, var_init_value_));
+                var_decls_.add(0, new VarDecl(id_xleft, id_xright, new Variable(id_xleft, id_xright, id_), type_, var_init_value_));
                 RESULT = var_decls_;
               :}
               |
               ID:id_ COLON Type:type_ Var_init_value:var_init_value_
               {:
                 RESULT = new ArrayList<VarDecl>();
-                RESULT.add(new VarDecl(id_left, id_right, new Id(id_left, id_right, id_), type_, var_init_value_));
+                RESULT.add(0, new VarDecl(id_xleft, id_xright, new Variable(id_xleft, id_xright, id_), type_, var_init_value_));
               :}
 ;
 /* Var_init_value : ASSIGN Expr
@@ -188,7 +193,7 @@ Var_decls ::= Var_decls:var_decls_ SEMI ID:id_ COLON Type:type_ Var_init_value:v
 
 Var_init_value ::= ASSIGN Expr:expr_
                {:
-                 RESULT = new VarInitValue(expr_left, expr_right, expr_);
+                 RESULT = new VarInitValue(expr_xleft, expr_xright, expr_);
                :}
                |
                 //Epsilon
@@ -199,56 +204,56 @@ Var_init_value ::= ASSIGN Expr:expr_
         | LPAR RPAR ARROW Type */
 Type ::= NIL:nil_
         {:
-            RESULT= new PrimitiveType(nil_left, nil_right, "NIL");
+            RESULT= new PrimitiveType(nil_xleft, nil_xright, "NIL");
         :}
         |
         INT:int_
         {:
-            RESULT= new PrimitiveType(int_left, int_right, "INT");
+            RESULT= new PrimitiveType(int_xleft, int_xright, "INT");
         :}
         |
        BOOL:bool_
         {:
-           RESULT= new PrimitiveType(bool_left, bool_right, "BOOL");
+           RESULT= new PrimitiveType(bool_xleft, bool_xright, "BOOL");
         :}
        |
        FLOAT:float_
         {:
-           RESULT= new PrimitiveType(float_left, float_right, "FLOAT");
+           RESULT= new PrimitiveType(float_xleft, float_xright, "FLOAT");
         :}
        |
        STRING:string_
         {:
-           RESULT= new PrimitiveType(string_left, string_right, "STRING");
+           RESULT= new PrimitiveType(string_xleft, string_xright, "STRING");
         :}
        |
        BLPAR:blpar_ Type:type_ BRPAR
         {:
-           RESULT= new ArrayType(blpar_left, blpar_right, type_);
+           RESULT= new ArrayType(blpar_xleft, blpar_xright, type_);
         :}
         |
        LPAR:lpar_ Types:types_ RPAR ARROW Type:type_
         {:
-           RESULT= new FunctionType(lpar_left, lpar_right, types_, type_);
+           RESULT= new FunctionType(lpar_xleft, lpar_xright, types_, type_);
         :}
         |
         LPAR:lpar_ RPAR ARROW Type:type_
         {:
-           RESULT= new FunctionType(lpar_left, lpar_right, type_);
+           RESULT= new FunctionType(lpar_xleft, lpar_xright, type_);
         :}
 ;
 /* Types : Type COMMA Types
          | Type */
 Types ::= Type:type_ COMMA Types:types_
           {:
-            types_.add(type_);
+            types_.add(0, type_);
             RESULT = types_;
           :}
           |
           Type:type_
           {:
             RESULT = new ArrayList<Type>();
-            RESULT.add(type_);
+            RESULT.add(0, type_);
           :}
 ;
 /* Statements : Stat SEMI Statements
@@ -256,14 +261,14 @@ Types ::= Type:type_ COMMA Types:types_
 
 Statements ::= Stat:stat_ SEMI Statements:statements_
             {:
-                statements_.add(stat_);
+                statements_.add(0, stat_);
                 RESULT = statements_;
             :}
             |
             Stat:stat_
             {:
                 RESULT = new ArrayList<Statement>();
-                RESULT.add(stat_);
+                RESULT.add(0, stat_);
             :}
 ;
 
@@ -282,80 +287,80 @@ Statements ::= Stat:stat_ SEMI Statements:statements_
 
 Stat ::= NOP:nop_
      {:
-        RESULT= new NopStatement(nop_left, nop_right);
+        RESULT= new NopStatement(nop_xleft, nop_xright);
      :}
      |
      WHILE:while_ Expr:expr_ DO Statements:statements_ END
      {:
-        RESULT = new WhileStatement(while_left, while_right, expr_, statements_);
+        RESULT = new WhileStatement(while_xleft, while_xright, expr_, statements_);
      :}
      |
      IF:if_ Expr:expr_ THEN Statements:statements_ ELSE Statements:else_statements_ END
      {:
-       RESULT = new IfElseStatement(if_left, if_right, expr_, statements_, else_statements_ );
+       RESULT = new IfElseStatement(if_xleft, if_xright, expr_, statements_, else_statements_ );
      :}
      |
      IF:if_ Expr:expr_ THEN Statements:statements_ END
      {:
-        RESULT = new IfStatement(if_left, if_right, expr_, statements_);
+        RESULT = new IfStatement(if_xleft, if_xright, expr_, statements_);
      :}
      |
      FOR:for_ ID:id_ ASSIGN Expr:init_expression_ COMMA Expr:condition_expression_ DO Statements:statements_ END
      {:
-        RESULT = new ForStatement(for_left, for_right, new Id(id_left, id_right, id_), init_expression_, condition_expression_, statements_);
+        RESULT = new ForStatement(for_xleft, for_xright, new Variable(id_xleft, id_xright, id_), init_expression_, condition_expression_, statements_);
      :}
      |
      LOCAL:local_ Var_decls:var_decls_ SEMI Statements:statements_ END
      {:
-        RESULT = new LocalStatement(local_left, local_right, var_decls_, statements_);
+        RESULT = new LocalStatement(local_xleft, local_xright, var_decls_, statements_);
      :}
      | ID:id_ ASSIGN Expr:expr_
      {:
-        RESULT = new AssignStatement(id_left, id_right, new Id(id_left, id_right, id_), expr_);
+        RESULT = new AssignStatement(id_xleft, id_xright, new Id(id_xleft, id_xright, id_), expr_);
      :}
      |
      Expr:expr_name_ SLPAR Expr:expr_index_ SRPAR ASSIGN Expr:expr_
      {:
-        RESULT = new ArrayAssignStatement(expr_name_left, expr_name_right, expr_name_, expr_index_, expr_);
+        RESULT = new ArrayAssignStatement(expr_name_xleft, expr_name_xright, expr_name_, expr_index_, expr_);
      :}
      |
      ID:id_ LPAR Exprs:exprs_ RPAR
      {:
-        RESULT = new CallFunctionStatement(id_left, id_right, new Id(id_left, id_right, id_), exprs_);
+        RESULT = new CallFunctionStatement(id_xleft, id_xright, new Id(id_xleft, id_xright, id_), exprs_);
      :}
      |
      Vars:vars_ READ
      {:
-        RESULT = new ReadStatement(vars_left, vars_right, vars_);
+        RESULT = new ReadStatement(vars_xleft, vars_xright, vars_);
      :}
      |
      Exprs:exprs_ WRITE
      {:
-        RESULT = new WriteStatement(exprs_left, exprs_right, exprs_);
+        RESULT = new WriteStatement(exprs_xleft, exprs_xright, exprs_);
      :}
      |
      RETURN:return_ Expr:expr_
      {:
-        RESULT = new ReturnStatement(return_left, return_right, expr_);
+        RESULT = new ReturnStatement(return_xleft, return_xright, expr_);
      :}
      |
      error:error_
       {:
-        System.out.println("left: " + error_left + " right: " + error_right);
+        System.out.println("left: " + error_xleft + " right: " + error_xright);
       :}
 ;
 /* Vars : ID COMMA Vars
         | ID */
 Vars ::= ID:id_ COMMA Vars:vars_
         {:
-            vars_.add(new Id(id_left, id_right, id_));
+            vars_.add(0, new Id(id_xleft, id_xright, id_));
             RESULT= vars_;
         :}
         |
         ID:id_
         {:
             RESULT = new ArrayList<Id>();
-            RESULT.add(new Id(id_left,id_right , id_));
+            RESULT.add(0, new Id(id_xleft,id_xright , id_));
         :}
 ;
 
@@ -364,14 +369,14 @@ Vars ::= ID:id_ COMMA Vars:vars_
 
 Exprs ::= Expr:expr_ COMMA Exprs:exprs_
          {:
-            exprs_.add(expr_);
+            exprs_.add(0, expr_);
             RESULT = exprs_;
         :}
          |
          Expr:expr_
          {:
             RESULT = new ArrayList<Expr>();
-            RESULT.add(expr_);
+            RESULT.add(0, expr_);
         :}
 ;
 
@@ -403,126 +408,126 @@ Exprs ::= Expr:expr_ COMMA Exprs:exprs_
 
 Expr ::= NIL:nil_
         {:
-            RESULT = new NilConst(nil_left, nil_right);
+            RESULT = new NilConst(nil_xleft, nil_xright);
         :}
         |
         TRUE:true_
         {:
-            RESULT = new BooleanConst(true_left, true_right, true);
+            RESULT = new BooleanConst(true_xleft, true_xright, true);
         :}
         |
         FALSE:false_
         {:
-            RESULT = new BooleanConst(false_left, false_right, false);
+            RESULT = new BooleanConst(false_xleft, false_xright, false);
         :}
         |
         INT_CONST:int_
         {:
-            RESULT = new IntegerConst(int_left, int_right, int_);
+            RESULT = new IntegerConst(int_xleft, int_xright, int_);
         :}
         |
         FLOAT_CONST:float_
         {:
-            RESULT = new FloatConst(float_left, float_right, float_);
+            RESULT = new FloatConst(float_xleft, float_xright, float_);
         :}
         |
         STRING_CONST:string_
         {:
-            RESULT = new StringConst(string_left,string_right, string_);
+            RESULT = new StringConst(string_xleft,string_xright, string_);
         :}
         |
         BLPAR:blpar_ BRPAR COLON Type:type_
         {:
-            RESULT = new ArrayConst(blpar_left, blpar_right, type_);
+            RESULT = new ArrayConst(blpar_xleft, blpar_xright, type_);
         :}
         | ID:id_
         {:
-            RESULT = new Id(id_left, id_right , id_);
+            RESULT = new Id(id_xleft, id_xright , id_);
         :}
         |
         Expr:expr_name_ SLPAR Expr:expr_ SRPAR
         {:
-            RESULT = new ArrayReadElement(expr_name_left, expr_name_right,  expr_name_, expr_);
+            RESULT = new ArrayReadElement(expr_name_xleft, expr_name_xright,  expr_name_, expr_);
         :}
         |
         ID:id_ LPAR Exprs:exprs_ RPAR
         {:
-            RESULT = new FunctionCall(id_left, id_right, new Id(id_left, id_right, id_), exprs_);
+            RESULT = new FunctionCall(id_xleft, id_xright, new Id(id_xleft, id_xright, id_), exprs_);
         :}
         |
         Expr:expr1_ PLUS Expr:expr2_
         {:
-            RESULT = new PlusOperation(expr1_left, expr1_right, expr1_, expr2_);
+            RESULT = new PlusOperation(expr1_xleft, expr1_xright, expr1_, expr2_);
         :}
         |
         Expr:expr1_ MINUS Expr:expr2_
         {:
-            RESULT = new MinusOperation(expr1_left, expr1_right, expr1_, expr2_);
+            RESULT = new MinusOperation(expr1_xleft, expr1_xright, expr1_, expr2_);
         :}
         |
         Expr:expr1_ TIMES Expr:expr2_
         {:
-            RESULT = new TimesOperation(expr1_left, expr1_right, expr1_, expr2_);
+            RESULT = new TimesOperation(expr1_xleft, expr1_xright, expr1_, expr2_);
         :}
         |
         Expr:expr1_ DIV Expr:expr2_
         {:
-            RESULT = new DivOperation(expr1_left, expr1_right, expr1_, expr2_);
+            RESULT = new DivOperation(expr1_xleft, expr1_xright, expr1_, expr2_);
         :}
         |
         Expr:expr1_ AND Expr:expr2_
         {:
-            RESULT = new AndRelOperation(expr1_left, expr1_right, expr1_, expr2_);
+            RESULT = new AndRelOperation(expr1_xleft, expr1_xright, expr1_, expr2_);
         :}
         |
         Expr:expr1_ OR Expr:expr2_
         {:
-            RESULT = new OrRelOperation(expr1_left, expr1_right, expr1_, expr2_);
+            RESULT = new OrRelOperation(expr1_xleft, expr1_xright, expr1_, expr2_);
         :}
         |
         Expr:expr1_ GT Expr:expr2_
         {:
-            RESULT = new GreatThanRelOperation(expr1_left, expr1_right, expr1_, expr2_);
+            RESULT = new GreatThanRelOperation(expr1_xleft, expr1_xright, expr1_, expr2_);
         :}
         |
         Expr:expr1_ GE Expr:expr2_
         {:
-            RESULT = new GreatThanEqualsRelOperation(expr1_left, expr1_right, expr1_, expr2_);
+            RESULT = new GreatThanEqualsRelOperation(expr1_xleft, expr1_xright, expr1_, expr2_);
         :}
         |
         Expr:expr1_ LT Expr:expr2_
         {:
-            RESULT = new LessThanRelOperation(expr1_left, expr1_right, expr1_, expr2_);
+            RESULT = new LessThanRelOperation(expr1_xleft, expr1_xright, expr1_, expr2_);
         :}
         |
         Expr:expr1_ LE Expr:expr2_
         {:
-            RESULT = new LessThanEqualsRelOperation(expr1_left, expr1_right, expr1_, expr2_);
+            RESULT = new LessThanEqualsRelOperation(expr1_xleft, expr1_xright, expr1_, expr2_);
         :}
         |
         Expr:expr1_ EQ Expr:expr2_
         {:
-            RESULT = new EqualsRelOperation(expr1_left, expr1_right, expr1_, expr2_);
+            RESULT = new EqualsRelOperation(expr1_xleft, expr1_xright, expr1_, expr2_);
         :}
         |
         Expr:expr1_ NE Expr:expr2_
         {:
-            RESULT = new NotEqualsRelOperation(expr1_left, expr1_right, expr1_, expr2_);
+            RESULT = new NotEqualsRelOperation(expr1_xleft, expr1_xright, expr1_, expr2_);
         :}
         |
         MINUS Expr:expr_
         {:
-            RESULT = new UminusExpression(expr_left, expr_right, expr_);
+            RESULT = new UminusExpression(expr_xleft, expr_xright, expr_);
         :}
         %prec UMINUS
         |
         NOT Expr:expr_
         {:
-            RESULT = new NotExpression(expr_left, expr_right, expr_);
+            RESULT = new NotExpression(expr_xleft, expr_xright, expr_);
         :}
         |
         SHARP Expr:expr_
         {:
-            RESULT =new SharpExpression(expr_left, expr_right, expr_);
+            RESULT =new SharpExpression(expr_xleft, expr_xright, expr_);
         :}
 ;

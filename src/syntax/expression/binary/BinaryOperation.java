@@ -1,4 +1,5 @@
 package syntax.expression.binary;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 import syntax.expression.Expr;
 
@@ -14,7 +15,7 @@ public abstract class BinaryOperation extends Expr {
      * @param leftOperand the left operand
      * @param rightOperand the right operand
      */
-    public BinaryOperation(int leftPosition, int rightPosition, Expr leftOperand, Expr rightOperand) {
+    public BinaryOperation(Location leftPosition, Location rightPosition, Expr leftOperand, Expr rightOperand) {
         super(leftPosition, rightPosition);
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;

@@ -3,6 +3,7 @@ package syntax;
 import visitor.Visitor;
 
 import java.util.ArrayList;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class Program extends ASTNode {
     private Global global;
@@ -16,7 +17,7 @@ public class Program extends ASTNode {
      * @param global the global
      * @param functions functions list
      */
-    public Program(int leftPosition, int rightPosition, Global global, ArrayList<Function> functions) {
+    public Program(Location leftPosition, Location rightPosition, Global global, ArrayList<Function> functions) {
         super(leftPosition, rightPosition);
         this.global = global;
         this.functions = functions;

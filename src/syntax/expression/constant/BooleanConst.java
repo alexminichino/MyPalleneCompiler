@@ -3,6 +3,7 @@ package syntax.expression.constant;
 import syntax.Leaf;
 import syntax.expression.Expr;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class BooleanConst extends Expr implements Leaf<Boolean> {
     private boolean value;
@@ -12,7 +13,7 @@ public class BooleanConst extends Expr implements Leaf<Boolean> {
      * @param rightPosition the right position
      * @param value the value
      */
-    public BooleanConst(int leftPosition, int rightPosition, boolean value) {
+    public BooleanConst(Location leftPosition, Location rightPosition, boolean value) {
         super(leftPosition, rightPosition);
         this.value = value;
     }

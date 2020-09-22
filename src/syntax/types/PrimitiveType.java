@@ -3,6 +3,7 @@ package syntax.types;
 import nodetype.NodeType;
 import nodetype.PrimitiveNodeType;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class PrimitiveType extends Type{
     private String nameType;
@@ -12,7 +13,7 @@ public class PrimitiveType extends Type{
      * @param rightPosition the right position
      * @param nameType the name of type
      */
-    public PrimitiveType(int leftPosition, int rightPosition, String nameType) {
+    public PrimitiveType(Location leftPosition, Location rightPosition, String nameType) {
         super(leftPosition, rightPosition);
         this.nameType = nameType;
     }
@@ -39,7 +40,7 @@ public class PrimitiveType extends Type{
     }
 
     @Override
-    public NodeType typeFactory() {
+    public PrimitiveNodeType typeFactory() {
         switch(nameType){
             case "INT":
                 return PrimitiveNodeType.INT;
@@ -51,6 +52,22 @@ public class PrimitiveType extends Type{
                 return PrimitiveNodeType.BOOL;
             default:
                 return PrimitiveNodeType.NIL;
+        }
+    }
+
+    @Override
+    public String getCType() {
+        switch(this.nameType){
+            case "INT":
+                return "int";
+            case "FLOAT":
+                return "float";
+            case "STRING":
+                return "char *";
+            case "BOOL":
+                return "bool";
+            default:
+                return "undefined";
         }
     }
 }

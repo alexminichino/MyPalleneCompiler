@@ -3,6 +3,7 @@ package syntax.expression.binary.arithmetic;
 import syntax.expression.Expr;
 import syntax.expression.binary.BinaryOperation;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class DivOperation extends BinaryOperation {
     /**
@@ -13,7 +14,7 @@ public class DivOperation extends BinaryOperation {
      * @param leftOperand   the left operand
      * @param rightOperand  the right operand
      */
-    public DivOperation(int leftPosition, int rightPosition, Expr leftOperand, Expr rightOperand) {
+    public DivOperation(Location leftPosition, Location rightPosition, Expr leftOperand, Expr rightOperand) {
         super(leftPosition, rightPosition, leftOperand, rightOperand);
     }
 

@@ -5,6 +5,7 @@ import syntax.expression.Expr;
 import visitor.Visitor;
 
 import javax.lang.model.type.NullType;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class NilConst extends Expr implements Leaf<NullType> {
 
@@ -14,7 +15,7 @@ public class NilConst extends Expr implements Leaf<NullType> {
      * @param leftPosition  the left position
      * @param rightPosition the right position
      */
-    public NilConst(int leftPosition, int rightPosition) {
+    public NilConst(Location leftPosition, Location rightPosition) {
         super(leftPosition, rightPosition);
     }
 

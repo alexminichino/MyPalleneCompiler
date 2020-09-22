@@ -38,18 +38,20 @@ public class SymbolTable extends LinkedHashMap<Integer, HashMap<Integer, SymbolT
                 );
     }
 
-    public Optional<SymbolTableEntry> getEntry(String lexeme){
-        int address = stringTable.getAddress(lexeme);
-        for (int i = scopeLevel.size(); i >= 0 ; i --){
-            int level = scopeLevel.elementAt(i);
-            if(get(level).containsKey(address) ){
-                return Optional.of(
-                        get(level).get(address)
-                );
+
+
+    public Optional<SymbolTableEntry> getTableEntryIfExists(String lexeme) {
+        int address = this.stringTable.getAddress(lexeme);
+        int size = (this.scopeLevel.size() - 1);
+        for (int i = size; i >= 0; i--) {
+            int level = this.scopeLevel.elementAt(i);
+            if (this.get(level).containsKey(address)) {
+                return Optional.of(this.get(level).get(address));
             }
         }
         return Optional.empty();
     }
+
 
     public void addEntry(String lexeme, SymbolTableEntry entry){
         int address = stringTable.getAddress(lexeme);

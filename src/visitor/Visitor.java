@@ -100,4 +100,6 @@ public interface Visitor<T,P> {
     T visit(SharpExpression sharpExpression, P arg);
 
     T visit(UminusExpression uminusExpression, P arg);
+
+    T visit( Variable variable, P arg);
 }

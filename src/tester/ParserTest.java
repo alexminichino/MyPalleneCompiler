@@ -12,7 +12,7 @@ public class ParserTest {
         ComplexSymbolFactory complexSymbolFactory = new ComplexSymbolFactory();
         Lexer lexer = new Lexer(table,complexSymbolFactory);
         if (lexer.initialize(args[0])){
-            Parser parser = new Parser(lexer);
+            Parser parser = new Parser(lexer,complexSymbolFactory);
             System.out.println(parser.parse().value);
         }
         else {

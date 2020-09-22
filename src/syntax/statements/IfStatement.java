@@ -4,6 +4,7 @@ import syntax.expression.Expr;
 import visitor.Visitor;
 
 import java.util.ArrayList;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class IfStatement extends Statement{
     private Expr condition;
@@ -17,7 +18,7 @@ public class IfStatement extends Statement{
      * @param condition
      * @param thenStatement
      */
-    public IfStatement(int leftPosition, int rightPosition, Expr condition, ArrayList<Statement> thenStatement) {
+    public IfStatement(Location leftPosition, Location rightPosition, Expr condition, ArrayList<Statement> thenStatement) {
         super(leftPosition, rightPosition);
         this.condition = condition;
         this.thenStatement = thenStatement;

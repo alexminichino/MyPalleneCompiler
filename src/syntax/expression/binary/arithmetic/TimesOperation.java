@@ -3,6 +3,7 @@ package syntax.expression.binary.arithmetic;
 import syntax.expression.Expr;
 import syntax.expression.binary.BinaryOperation;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class TimesOperation extends BinaryOperation {
     /**
@@ -13,7 +14,7 @@ public class TimesOperation extends BinaryOperation {
      * @param leftOperand   the left operand
      * @param rightOperand  the right operand
      */
-    public TimesOperation(int leftPosition, int rightPosition, Expr leftOperand, Expr rightOperand) {
+    public TimesOperation(Location leftPosition, Location rightPosition, Expr leftOperand, Expr rightOperand) {
         super(leftPosition, rightPosition, leftOperand, rightOperand);
     }
 

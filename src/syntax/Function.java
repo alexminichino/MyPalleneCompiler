@@ -8,44 +8,43 @@ import syntax.types.Type;
 import visitor.Visitor;
 
 import java.util.ArrayList;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class Function extends ASTNode {
     private Type type;
-    private Id id;
+    private Variable variable;
     private ArrayList<Statement> statements;
     private ArrayList<ParDecl> parDecls;
 
     /**
      * Initialize a new Function with params.
-     *
-     * @param leftPosition  the left position
+     *  @param leftPosition  the left position
      * @param rightPosition the right position
-     * @param id the id
-     * @param type the type
+     * @param variable the variable
      * @param parDecls the pardecl
+     * @param type the type
      * @param statements list of statement
      */
-    public Function(int leftPosition, int rightPosition, Id id, ArrayList<ParDecl> parDecls, Type type, ArrayList<Statement> statements) {
+    public Function(Location leftPosition, Location rightPosition, Variable variable, ArrayList<ParDecl> parDecls, Type type, ArrayList<Statement> statements) {
         super(leftPosition, rightPosition);
         this.type = type;
-        this.id = id;
+        this.variable = variable;
         this.statements = statements;
         this.parDecls = parDecls;
     }
 
     /**
      * Initialize a new Function without params.
-     *
-     * @param leftPosition  the left position
+     *  @param leftPosition  the left position
      * @param rightPosition the right position
-     * @param id the id
+     * @param variable the variable
      * @param type the type
      * @param statements list of statement
      */
-    public Function(int leftPosition, int rightPosition, Id id, Type type, ArrayList<Statement> statements) {
+    public Function(Location leftPosition, Location rightPosition, Variable variable, Type type, ArrayList<Statement> statements) {
         super(leftPosition, rightPosition);
         this.type = type;
-        this.id = id;
+        this.variable = variable;
         this.statements = statements;
         this.parDecls = new ArrayList<ParDecl>();
     }
@@ -58,10 +57,10 @@ public class Function extends ASTNode {
     }
 
     /**
-     * @return the id
+     * @return the variable
      */
-    public Id getId() {
-        return id;
+    public Variable getVariable() {
+        return variable;
     }
 
     /**

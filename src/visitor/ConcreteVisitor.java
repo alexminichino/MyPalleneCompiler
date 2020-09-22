@@ -47,7 +47,7 @@ public class ConcreteVisitor implements Visitor<Element, Document> {
     @Override
     public Element visit(Function function, Document arg) {
         Element element = arg.createElement(function.getClass().getSimpleName());
-        element.appendChild(function.getId().accept(this, arg));
+        element.appendChild(function.getVariable().accept(this, arg));
         function.getParDecls().forEach(appendLamda(element, arg));
         element.appendChild(function.getType().accept(this, arg));
         function.getStatements().forEach(appendLamda(element, arg));
@@ -57,7 +57,7 @@ public class ConcreteVisitor implements Visitor<Element, Document> {
     @Override
     public Element visit(ParDecl parDecl, Document arg) {
         Element element = arg.createElement(parDecl.getClass().getSimpleName());
-        element.appendChild(parDecl.getId().accept(this, arg));
+        element.appendChild(parDecl.getVariable().accept(this, arg));
         element.appendChild((parDecl.getType().accept(this, arg)));
         return element;
     }
@@ -65,9 +65,11 @@ public class ConcreteVisitor implements Visitor<Element, Document> {
     @Override
     public Element visit(VarDecl varDecl, Document arg) {
         Element element = arg.createElement(varDecl.getClass().getSimpleName());
-        element.appendChild(varDecl.getId().accept(this, arg));
+        element.appendChild(varDecl.getVariable().accept(this, arg));
         element.appendChild(varDecl.getType().accept(this, arg));
-        element.appendChild(varDecl.getVarInitValue().accept(this, arg));
+        if(varDecl.getVarInitValue() != null) {
+            element.appendChild(varDecl.getVarInitValue().accept(this, arg));
+        }
         return element;
     }
 
@@ -338,6 +340,13 @@ public class ConcreteVisitor implements Visitor<Element, Document> {
     public Element visit(UminusExpression uminusExpression, Document arg) {
         Element element = arg.createElement(uminusExpression.getClass().getSimpleName());
         element.appendChild(uminusExpression.getExpr().accept(this, arg));
+        return element;
+    }
+
+    @Override
+    public Element visit(Variable variable, Document arg) {
+        Element element = arg.createElement(variable.getClass().getSimpleName());
+        element.setAttribute("lexeme", variable.getValue());
         return element;
     }
 

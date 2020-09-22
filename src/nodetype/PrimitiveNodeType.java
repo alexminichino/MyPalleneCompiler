@@ -212,7 +212,7 @@ public enum PrimitiveNodeType implements NodeType{
         }
     };
 
-    public String cType(){
+    public String getCType(){
         switch(this){
             case STRING:
                 return "char *";

@@ -1,6 +1,7 @@
 package syntax.statements;
 
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class NopStatement extends Statement{
 
@@ -10,7 +11,7 @@ public class NopStatement extends Statement{
      * @param leftPosition  the left position
      * @param rightPosition the right position
      */
-    public NopStatement(int leftPosition, int rightPosition) {
+    public NopStatement(Location leftPosition, Location rightPosition) {
         super(leftPosition, rightPosition);
     }
 

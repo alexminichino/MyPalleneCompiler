@@ -2,6 +2,7 @@ package syntax.expression.unary;
 
 import syntax.expression.Expr;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class NotExpression extends UnaryOperation{
 
@@ -12,7 +13,7 @@ public class NotExpression extends UnaryOperation{
      * @param rightPosition the right position
      * @param expr          the expression
      */
-    public NotExpression(int leftPosition, int rightPosition, Expr expr) {
+    public NotExpression(Location leftPosition, Location rightPosition, Expr expr) {
         super(leftPosition, rightPosition, expr);
     }
 

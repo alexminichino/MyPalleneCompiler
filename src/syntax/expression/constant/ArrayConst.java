@@ -3,6 +3,7 @@ package syntax.expression.constant;
 import syntax.expression.Expr;
 import syntax.types.Type;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class ArrayConst extends Expr {
     private Type type;
@@ -12,7 +13,7 @@ public class ArrayConst extends Expr {
      * @param rightPosition the right position
      * @param type type
      */
-    public ArrayConst(int leftPosition, int rightPosition, Type type) {
+    public ArrayConst(Location leftPosition, Location rightPosition, Type type) {
         super(leftPosition, rightPosition);
         this.type = type;
     }

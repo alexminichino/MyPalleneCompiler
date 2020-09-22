@@ -3,7 +3,6 @@ package visitor;
 import errors.ErrorHandler;
 import errors.ErrorItem;
 import nodetype.NodeTipology;
-import nodetype.NodeType;
 import nodetype.PrimitiveNodeType;
 import semantic.SymbolTable;
 import semantic.SymbolTableEntry;
@@ -61,7 +60,8 @@ public class ScopeConcreteVisitor implements Visitor<Boolean, SymbolTable> {
 
     @Override
     public Boolean visit(Id id, SymbolTable arg) {
-        return arg.containsLexeme(id.getValue());
+        boolean ret = arg.getTableEntryIfExists(id.getValue()).isPresent();
+        return ret;
     }
 
     @Override
@@ -286,10 +286,10 @@ public class ScopeConcreteVisitor implements Visitor<Boolean, SymbolTable> {
     @Override
     public Boolean visit(ForStatement forStatement, SymbolTable arg) {
         arg.enterInScope();
-        Id id = forStatement.getId();
-        boolean isOk = id.accept(this, arg);
+        Variable variable = forStatement.getVariable();
+        boolean isOk = variable.accept(this, arg);
         if (isOk){
-            arg.addEntry(id.getValue(), new SymbolTableEntry(NodeTipology.VAR,  PrimitiveNodeType.INT, id.getName()));
+            arg.addEntry(variable.getValue(), new SymbolTableEntry(NodeTipology.VAR,  PrimitiveNodeType.INT, variable.getName()));
         }
         isOk &= forStatement.getInitialConditionExpression().accept(this, arg);
         isOk &= forStatement.getLoopConditionExpression().accept(this, arg);
@@ -325,8 +325,8 @@ public class ScopeConcreteVisitor implements Visitor<Boolean, SymbolTable> {
     @Override
     public Boolean visit(LocalStatement localStatement, SymbolTable arg) {
         arg.enterInScope();
-        boolean isOk = acceptList(localStatement.getStatements(), arg);
-        isOk &= acceptList(localStatement.getVarDecls(), arg);
+        boolean isOk = acceptList(localStatement.getVarDecls(), arg);
+        isOk &= acceptList(localStatement.getStatements(), arg);
         if(!isOk){
             errorHandler.adderror(new ErrorItem("Local error", localStatement));
         }
@@ -387,15 +387,15 @@ public class ScopeConcreteVisitor implements Visitor<Boolean, SymbolTable> {
 
     @Override
     public Boolean visit(ParDecl parDecl, SymbolTable arg) {
-        Id id = parDecl.getId();
-        boolean isOk= id.accept(this, arg);
+        Variable variable = parDecl.getVariable();
+        boolean isOk= variable.accept(this, arg);
         isOk &= parDecl.getType().accept(this, arg);
 
         if (!isOk){
             errorHandler.adderror(new ErrorItem("Parameter Declaration error", parDecl));
         }
         else{
-            arg.addEntry(id.getValue(), new SymbolTableEntry(NodeTipology.VAR, parDecl.getType().typeFactory(), id.getName() ));
+            arg.addEntry(variable.getValue(), new SymbolTableEntry(NodeTipology.VAR, parDecl.getType().typeFactory(), variable.getName() ));
         }
         return isOk;
     }
@@ -414,11 +414,14 @@ public class ScopeConcreteVisitor implements Visitor<Boolean, SymbolTable> {
 
     @Override
     public Boolean visit(VarDecl varDecl, SymbolTable arg) {
-        boolean isOk = varDecl.getId().accept(this,arg);
+        boolean isOk = varDecl.getVariable().accept(this,arg);
         isOk &= varDecl.getType().accept(this,arg);
         isOk &=  (varDecl.getVarInitValue() != null) ? varDecl.getVarInitValue().accept(this, arg) : true;
         if (!isOk){
             errorHandler.adderror(new ErrorItem("Variable Declaration error", varDecl));
+        }
+        else {
+            arg.addEntry(varDecl.getVariable().getValue(), new SymbolTableEntry(NodeTipology.VAR, varDecl.getType().typeFactory(), varDecl.getVariable().getName()));
         }
         return isOk;
     }
@@ -472,5 +475,10 @@ public class ScopeConcreteVisitor implements Visitor<Boolean, SymbolTable> {
             errorHandler.adderror(new ErrorItem("Uminus error", uminusExpression ));
         }
         return isOk;
+    }
+
+    @Override
+    public Boolean visit(Variable variable, SymbolTable arg) {
+        return !arg.containsLexeme(variable.getValue() );
     }
 }

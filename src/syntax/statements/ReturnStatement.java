@@ -2,6 +2,7 @@ package syntax.statements;
 
 import syntax.expression.Expr;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public class ReturnStatement extends Statement {
     private Expr returnExpression;
@@ -11,7 +12,7 @@ public class ReturnStatement extends Statement {
      * @param rightPosition the right position
      * @param returnExpression
      */
-    public ReturnStatement(int leftPosition, int rightPosition, Expr returnExpression) {
+    public ReturnStatement(Location leftPosition, Location rightPosition, Expr returnExpression) {
         super(leftPosition, rightPosition);
         this.returnExpression = returnExpression;
     }

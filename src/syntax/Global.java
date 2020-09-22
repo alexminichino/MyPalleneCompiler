@@ -4,6 +4,8 @@ import visitor.Visitor;
 
 import java.util.ArrayList;
 
+import java_cup.runtime.ComplexSymbolFactory.Location;
+
 public class Global extends ASTNode{
     private ArrayList<VarDecl> varDecls;
     /**
@@ -13,7 +15,7 @@ public class Global extends ASTNode{
      * @param rightPosition the right position
      * @param varDecls the variable declaration list
      */
-    public Global(int leftPosition, int rightPosition, ArrayList<VarDecl> varDecls) {
+    public Global(Location leftPosition, Location rightPosition, ArrayList<VarDecl> varDecls) {
         super(leftPosition, rightPosition);
         this.varDecls = varDecls;
     }
@@ -24,7 +26,7 @@ public class Global extends ASTNode{
      * @param leftPosition  the left position
      * @param rightPosition the right position
      */
-    public Global(int leftPosition, int rightPosition) {
+    public Global(Location leftPosition, Location rightPosition) {
         super(leftPosition, rightPosition);
     }
 

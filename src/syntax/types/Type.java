@@ -3,6 +3,7 @@ package syntax.types;
 import nodetype.NodeType;
 import syntax.ASTNode;
 import visitor.Visitor;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 public abstract class Type extends ASTNode {
     /**
@@ -11,9 +12,11 @@ public abstract class Type extends ASTNode {
      * @param leftPosition  the left position
      * @param rightPosition the right position
      */
-    public Type(int leftPosition, int rightPosition) {
+    public Type(Location leftPosition, Location rightPosition) {
         super(leftPosition, rightPosition);
     }
+
+    public abstract String getCType();
 
     public abstract NodeType typeFactory();
 }
