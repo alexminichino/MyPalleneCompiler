@@ -18,27 +18,6 @@ public class CUtils {
         }
     }
 
-    public static String getTemplate2() {
-        InputStream is = null;
-        String templatePath= "templates/template.c";
-        StringBuilder builder = new StringBuilder();
-        try {
-            is = new FileInputStream(templatePath);
-            BufferedReader buf = new BufferedReader(new InputStreamReader(is));
-            String line;
-            while((line = buf.readLine()) != null){
-                builder.append(line).append("\n");
-                line = buf.readLine();
-            }
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found at" +templatePath);
-
-        } catch (IOException e) {
-            System.err.println("Error in template reading!");
-        }
-
-        return builder.toString();
-    }
 
 
     public static String getTemplate() {
@@ -52,7 +31,7 @@ public class CUtils {
         } catch (IOException e) {
             System.err.println("Error in template reading!");
         }
-
+        
         return template;
     }
 }

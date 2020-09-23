@@ -1,2 +1,5 @@
 out.txt
 /out/
+/test_files/*.c
+/test_files/*.xml
+/test_files/*.out

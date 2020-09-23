@@ -261,7 +261,7 @@ public class CodeGeneratorConcreteVisitor implements Visitor<String, SymbolTable
 
   @Override
   public String visit(StringConst stringConst, SymbolTable arg) {
-    return "\"" + stringConst.getValue() + "\"";
+    return ("\"" + stringConst.getValue() + "\"").replace("\n", "\\n");
   }
 
   @Override
