@@ -276,6 +276,7 @@ Statements ::= Stat:stat_ SEMI Statements:statements_
         | WHILE Expr DO Statements END
         | IF Expr THEN Statements ELSE Statements END
         | IF Expr THEN Statements END
+        | IF Expr THEN Statements END
         | FOR ID ASSIGN Expr COMMA Expr DO Statements END
         | LOCAL Var_decls SEMI Statements END
         | ID ASSIGN Expr

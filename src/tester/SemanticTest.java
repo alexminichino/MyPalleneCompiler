@@ -83,6 +83,7 @@ public class SemanticTest {
             log("Generated Code:\n\n"+generated);
             log("Saving file");
             CUtils.write(generated,args[0]);
+            symbolTable.reset();
 
 
         } else {

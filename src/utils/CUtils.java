@@ -31,7 +31,7 @@ public class CUtils {
         } catch (IOException e) {
             System.err.println("Error in template reading!");
         }
-        
+
         return template;
     }
 }
