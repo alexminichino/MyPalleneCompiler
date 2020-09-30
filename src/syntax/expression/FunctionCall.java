@@ -1,5 +1,7 @@
 package syntax.expression;
 
+import nodetype.FunctionNodeType;
+import nodetype.NodeType;
 import visitor.Visitor;
 
 import java.util.ArrayList;
@@ -46,5 +48,12 @@ public class FunctionCall extends Expr {
     @Override
     public <T, P> T accept(Visitor<T, P> visitor, P arg) {
         return visitor.visit(this, arg);
+    }
+
+
+    @Override
+    public NodeType getNodeType() {
+        FunctionNodeType functionNodeType = (FunctionNodeType) super.getNodeType();
+        return functionNodeType.getNodeType();
     }
 }

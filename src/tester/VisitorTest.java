@@ -15,7 +15,7 @@ public class VisitorTest {
         ComplexSymbolFactory complexSymbolFactory = new ComplexSymbolFactory();
         Lexer lexer = new Lexer(table, complexSymbolFactory);
         if (lexer.initialize(args[0])){
-            Parser parser = new Parser(lexer);
+            Parser parser = new Parser(lexer,complexSymbolFactory);
             Program program= (Program) parser.parse().value;
 
             //The document

@@ -1295,12 +1295,12 @@ public class Lexer implements java_cup.runtime.Scanner {
             // fall through
           case 109: break;
           case 51:
-            { return createToken(ParserSym.TRUE);
+            { return createToken(ParserSym.TRUE, true);
             }
             // fall through
           case 110: break;
           case 52:
-            { return createToken(ParserSym.FALSE);
+            { return createToken(ParserSym.FALSE, false);
             }
             // fall through
           case 111: break;

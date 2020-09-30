@@ -32,7 +32,7 @@ import lexical.StringTable;
     private StringTable stringTable;
     private ComplexSymbolFactory complexSymbolFactory;
 
-    private Symbol createToken(String name, int type) {
+    private Symbol createToken(int type) {
        String name = ParserSym.terminalNames[type];
        return complexSymbolFactory.newSymbol(name, type, new Location(yyline + 1, yycolumn + 1 - yylength()), new Location(yyline + 1, yycolumn + 1));
     }
@@ -61,7 +61,7 @@ import lexical.StringTable;
 %}
 
 %eofval{
-	return createToken("EOF",ParserSym.EOF);
+	return createToken(ParserSym.EOF);
 %eofval}
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
@@ -99,8 +99,8 @@ FloatLiteral = (0|[1-9][0-9]*)(\.[0-9]*)?([eE][+\-]?[0-9]+)?
   "while"		    { return createToken(ParserSym.WHILE); }
   "do"		        { return createToken(ParserSym.DO); }
   "return"		    { return createToken(ParserSym.RETURN); }
-  "true"		    { return createToken(ParserSym.TRUE); }
-  "false"		    { return createToken(ParserSym.FALSE); }
+  "true"		    { return createToken(ParserSym.TRUE, true); }
+  "false"		    { return createToken(ParserSym.FALSE, false); }
   "#"		        { return createToken(ParserSym.SHARP); }
   "<=="		        { return createToken(ParserSym.READ); }
   "==>"		        { return createToken(ParserSym.WRITE); }
