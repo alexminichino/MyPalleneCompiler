@@ -11,7 +11,7 @@ Found candidate GCC installation: /usr/lib/gcc/x86_64-linux-gnu/8
 Selected GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/7.5.0
 Candidate multilib: .;@m64
 Selected multilib: .;@m64
- "/usr/lib/llvm-6.0/bin/clang" -cc1 -triple x86_64-pc-linux-gnu -emit-llvm -disable-free -disable-llvm-verifier -discard-value-names -main-file-name alex.c -mrelocation-model static -mthread-model posix -mdisable-fp-elim -fmath-errno -masm-verbose -mconstructor-aliases -munwind-tables -fuse-init-array -target-cpu x86-64 -dwarf-column-info -debugger-tuning=gdb -v -coverage-notes-file /mnt/c/Users/alexm/IdeaProjects/Esercitazione5/test_files/alex.gcno -resource-dir /usr/lib/llvm-6.0/lib/clang/6.0.0 -internal-isystem /usr/local/include -internal-isystem /usr/lib/llvm-6.0/lib/clang/6.0.0/include -internal-externc-isystem /usr/include/x86_64-linux-gnu -internal-externc-isystem /include -internal-externc-isystem /usr/include -fdebug-compilation-dir /mnt/c/Users/alexm/IdeaProjects/Esercitazione5 -ferror-limit 19 -fmessage-length 0 -fobjc-runtime=gcc -fdiagnostics-show-option -o test_files/alex.ll -x c test_files/alex.c
+ "/usr/lib/llvm-6.0/bin/clang" -cc1 -triple x86_64-pc-linux-gnu -emit-llvm -disable-free -disable-llvm-verifier -discard-value-names -main-file-name test_prod.c -mrelocation-model static -mthread-model posix -mdisable-fp-elim -fmath-errno -masm-verbose -mconstructor-aliases -munwind-tables -fuse-init-array -target-cpu x86-64 -dwarf-column-info -debugger-tuning=gdb -v -coverage-notes-file /mnt/c/Users/alexm/IdeaProjects/Esercitazione5/test_files/test_prod.gcno -resource-dir /usr/lib/llvm-6.0/lib/clang/6.0.0 -internal-isystem /usr/local/include -internal-isystem /usr/lib/llvm-6.0/lib/clang/6.0.0/include -internal-externc-isystem /usr/include/x86_64-linux-gnu -internal-externc-isystem /include -internal-externc-isystem /usr/include -fdebug-compilation-dir /mnt/c/Users/alexm/IdeaProjects/Esercitazione5 -ferror-limit 19 -fmessage-length 0 -fobjc-runtime=gcc -fdiagnostics-show-option -o test_files/test_prod.ll -x c test_files/test_prod.c
 clang -cc1 version 6.0.0 based upon LLVM 6.0.0 default target x86_64-pc-linux-gnu
 ignoring nonexistent directory "/include"
 #include "..." search starts here:
@@ -21,3 +21,7 @@ ignoring nonexistent directory "/include"
  /usr/include/x86_64-linux-gnu
  /usr/include
 End of search list.
+test_files/test_prod.c:26:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+c;
+^
+1 warning generated.

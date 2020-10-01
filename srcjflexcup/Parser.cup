@@ -385,6 +385,12 @@ Stat ::= NOP:nop_
         log("Stat : ID LPAR Exprs RPAR");
      :}
      |
+     ID:id_ LPAR RPAR
+     {:
+        RESULT = new CallFunctionStatement(id_xleft, id_xright, new Id(id_xleft, id_xright, id_));
+        log("Stat : ID LPAR RPAR");
+     :}
+     |
      Vars:vars_ READ
      {:
         RESULT = new ReadStatement(vars_xleft, vars_xright, vars_);
@@ -527,6 +533,12 @@ Expr ::= NIL:nil_
         {:
             RESULT = new FunctionCall(id_xleft, id_xright, new Id(id_xleft, id_xright, id_), exprs_);
             log("Expr : ID LPAR Exprs RPAR");
+        :}
+        |
+        ID:id_ LPAR RPAR
+        {:
+            RESULT = new FunctionCall(id_xleft, id_xright, new Id(id_xleft, id_xright, id_));
+            log("Expr : ID LPAR RPAR");
         :}
         |
         Expr:expr1_ PLUS Expr:expr2_

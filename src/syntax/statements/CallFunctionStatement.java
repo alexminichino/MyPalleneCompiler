@@ -24,6 +24,17 @@ public class CallFunctionStatement extends Statement {
     }
 
     /**
+     * @param leftPosition  the left position
+     * @param rightPosition the right position
+     * @param id
+     */
+    public CallFunctionStatement(Location leftPosition, Location rightPosition, Id id) {
+        super(leftPosition, rightPosition);
+        this.id = id;
+        this.expressionsParams = new ArrayList<>();
+    }
+
+    /**
      * @return the id
      */
     public Id getId() {

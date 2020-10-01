@@ -24,6 +24,17 @@ public class FunctionCall extends Expr {
     }
 
     /**
+     * @param leftPosition  the left position
+     * @param rightPosition the right position
+     * @param id id
+     */
+    public FunctionCall(Location leftPosition, Location rightPosition, Id id) {
+        super(leftPosition, rightPosition);
+        this.id = id;
+        this.exprs = new ArrayList<>();
+    }
+
+    /**
      * @return the id
      */
     public Id getId() {

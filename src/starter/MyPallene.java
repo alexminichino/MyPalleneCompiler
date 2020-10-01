@@ -32,7 +32,7 @@ public class MyPallene {
 
     public void runCompiler() throws Exception {
         if (lexer.initialize(sourcePath)) {
-            Parser parser = new Parser(lexer, complexSymbolFactory);
+            Parser parser = new Parser(lexer, complexSymbolFactory, true);
             Program program = (Program) parser.parse().value;
             log("PARSING OK\n" + program);
 
