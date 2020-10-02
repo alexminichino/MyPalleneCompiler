@@ -1,4 +1,5 @@
 package visitor;
+import nodetype.ArrayNodeType;
 import nodetype.NodeType;
 import nodetype.PrimitiveNodeType;
 import semantic.SymbolTable;
@@ -6,6 +7,7 @@ import syntax.*;
 import syntax.expression.ArrayReadElement;
 import syntax.expression.FunctionCall;
 import syntax.expression.Id;
+import syntax.expression.binary.BinaryOperation;
 import syntax.expression.binary.arithmetic.DivOperation;
 import syntax.expression.binary.arithmetic.MinusOperation;
 import syntax.expression.binary.arithmetic.PlusOperation;
@@ -15,6 +17,7 @@ import syntax.expression.constant.*;
 import syntax.expression.unary.NotExpression;
 import syntax.expression.unary.SharpExpression;
 import syntax.expression.unary.UminusExpression;
+import syntax.expression.unary.UnaryOperation;
 import syntax.statements.*;
 import syntax.types.ArrayType;
 import syntax.types.FunctionType;
@@ -55,7 +58,14 @@ public class CodeGeneratorConcreteVisitor implements Visitor<String, SymbolTable
    *
    * */
   private String getFormatSpecifier(NodeType type){
-    PrimitiveNodeType pType = PrimitiveNodeType.class.cast(type);
+    PrimitiveNodeType pType;
+    if (type instanceof ArrayNodeType){
+      pType = ((ArrayNodeType) type).getTypeElement();
+    }
+    else{
+      pType = (PrimitiveNodeType) type;
+    }
+
     switch(pType){
       case FLOAT:
         return "%f";
@@ -184,6 +194,9 @@ public class CodeGeneratorConcreteVisitor implements Visitor<String, SymbolTable
     String postCond = forStatement.getLoopConditionExpression().accept(this, arg);
     String statements = this.beautify(forStatement.getStatements(), new StringJoiner("\n"), arg);
     arg.exitFromScope();
+    if (forStatement.getLoopConditionExpression() instanceof BinaryOperation){
+      return String.format("{\nint %s;\nfor(%s = %s; %s ; %s++){\n%s\n}\n}", variable, variable, initExpr, postCond, variable, statements);
+    }
     return String.format("{\nint %s;\nfor(%s = %s; %s < %s; %s++){\n%s\n}\n}", variable, variable, initExpr, variable, postCond, variable, statements);
   }
 
@@ -217,7 +230,17 @@ public class CodeGeneratorConcreteVisitor implements Visitor<String, SymbolTable
   public String visit(WriteStatement writeStatements, SymbolTable arg) {
     StringJoiner printfs = new StringJoiner("\n");
     writeStatements.getExpressions().forEach(expr -> {
-      String type = this.getFormatSpecifier(expr.getNodeType());
+      NodeType nodeType;
+      if (expr.getNodeType() == null && expr instanceof ArrayReadElement){
+        nodeType = ((ArrayReadElement) expr).getArrayAssignExpr().getNodeType();
+      }
+      else if (expr.getNodeType() == null && expr instanceof  UnaryOperation){
+        nodeType = ((UnaryOperation) expr).getExpr().getNodeType();
+      }
+      else{
+        nodeType = expr.getNodeType();
+      }
+      String type = this.getFormatSpecifier(nodeType);
       String toPrint = expr.accept(this, arg);
       printfs.add(String.format("printf(\"%s\", %s);", type, toPrint));
     });
