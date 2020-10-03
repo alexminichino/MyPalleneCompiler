@@ -1,4 +1,4 @@
-out.txt
+/*.log
 /out/
 /test_files/*.c
 /test_files/*.xml

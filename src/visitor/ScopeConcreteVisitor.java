@@ -47,7 +47,7 @@ public class ScopeConcreteVisitor implements Visitor<Boolean, SymbolTable> {
 
     @Override
     public Boolean visit(Function function, SymbolTable arg) {
-        arg.enterInScope();
+        arg.enterInScope(Function.class.getSimpleName());
         boolean isOk = acceptList(function.getParDecls(), arg);
         isOk = isOk & acceptList(function.getStatements(), arg);
         isOk = isOk & function.getType().accept(this, arg);
@@ -285,7 +285,7 @@ public class ScopeConcreteVisitor implements Visitor<Boolean, SymbolTable> {
 
     @Override
     public Boolean visit(ForStatement forStatement, SymbolTable arg) {
-        arg.enterInScope();
+        arg.enterInScope(ForStatement.class.getSimpleName());
         Variable variable = forStatement.getVariable();
         boolean isOk = variable.accept(this, arg);
         if (isOk){
@@ -324,7 +324,7 @@ public class ScopeConcreteVisitor implements Visitor<Boolean, SymbolTable> {
 
     @Override
     public Boolean visit(LocalStatement localStatement, SymbolTable arg) {
-        arg.enterInScope();
+        arg.enterInScope(LocalStatement.class.getSimpleName());
         boolean isOk = acceptList(localStatement.getVarDecls(), arg);
         isOk &= acceptList(localStatement.getStatements(), arg);
         if(!isOk){
@@ -402,7 +402,7 @@ public class ScopeConcreteVisitor implements Visitor<Boolean, SymbolTable> {
 
     @Override
     public Boolean visit(Program program, SymbolTable arg) {
-        arg.enterInScope();
+        arg.enterInScope(Program.class.getSimpleName());
         boolean isOk = (program.getGlobal()!=null)? program.getGlobal().accept(this,arg): true;
         isOk &= acceptList(program.getFunctions(), arg);
         if (!isOk){

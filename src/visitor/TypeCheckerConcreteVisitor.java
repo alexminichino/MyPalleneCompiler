@@ -46,7 +46,7 @@ public class TypeCheckerConcreteVisitor implements Visitor<NodeType, SymbolTable
 
   @Override
   public NodeType visit(Program program, SymbolTable arg) {
-    arg.enterInScope();
+    arg.enterInScope(Program.class.getSimpleName());
     if(program.getGlobal() != null) {
       program.getGlobal().accept(this, arg);
     }
@@ -68,7 +68,7 @@ public class TypeCheckerConcreteVisitor implements Visitor<NodeType, SymbolTable
     this.lastFunction = function.getVariable().getValue();
 
     NodeType functionType = function.getVariable().accept(this, arg);
-    arg.enterInScope();
+    arg.enterInScope(Function.class.getSimpleName());
     function.getParDecls().forEach(this.typeCheck(arg));
     function.getStatements().forEach(this.typeCheck(arg));
     arg.exitFromScope();
@@ -142,7 +142,7 @@ public class TypeCheckerConcreteVisitor implements Visitor<NodeType, SymbolTable
 
   @Override
   public NodeType visit(ForStatement forStatement, SymbolTable arg) {
-    arg.enterInScope();
+    arg.enterInScope(ForStatement.class.getSimpleName());
     NodeType exprType = forStatement.getInitialConditionExpression().accept(this, arg);
     NodeType postCondType = forStatement.getLoopConditionExpression().accept(this, arg);
     if(!exprType.equals(PrimitiveNodeType.INT) && !postCondType.equals(PrimitiveNodeType.INT)) {
@@ -200,7 +200,7 @@ public class TypeCheckerConcreteVisitor implements Visitor<NodeType, SymbolTable
 
   @Override
   public NodeType visit(LocalStatement localStatement, SymbolTable arg) {
-    arg.enterInScope();
+    arg.enterInScope(LocalStatement.class.getSimpleName());
     localStatement.getVarDecls().forEach(this.typeCheck(arg));
     localStatement.getStatements().forEach(this.typeCheck(arg));
     arg.exitFromScope();

@@ -96,7 +96,7 @@ public class CodeGeneratorConcreteVisitor implements Visitor<String, SymbolTable
 
   @Override
   public String visit(Program program, SymbolTable arg) {
-    arg.enterInScope();
+    arg.enterInScope(Program.class.getSimpleName());
     String global = program.getGlobal().accept(this, arg);
     String functionDefinitions = this.beautify(reorderFunctions(program.getFunctions()), new StringJoiner("\n"), arg);
     arg.exitFromScope();
@@ -116,7 +116,7 @@ public class CodeGeneratorConcreteVisitor implements Visitor<String, SymbolTable
   public String visit(Function function, SymbolTable arg) {
     String functionName = function.getVariable().accept(this, arg);
     StringJoiner arguments = new StringJoiner(", ");
-    arg.enterInScope();
+    arg.enterInScope(Function.class.getSimpleName());
     function.getParDecls().forEach(this.formatArg(arguments, arg));
     String returnType = function.getType().accept(this, arg);
     String body = this.beautify(function.getStatements(), new StringJoiner("\n"), arg);
@@ -132,7 +132,8 @@ public class CodeGeneratorConcreteVisitor implements Visitor<String, SymbolTable
     String parameterName = parDecl.getVariable().accept(this, arg);
     if(parDecl.getType() instanceof FunctionType) {
       return String.format(parameterType, parameterName);
-    } else {
+    }
+    else {
       return String.format("%s %s", parameterType, parameterName);
     }
   }
@@ -188,7 +189,7 @@ public class CodeGeneratorConcreteVisitor implements Visitor<String, SymbolTable
 
   @Override
   public String visit(ForStatement forStatement, SymbolTable arg) {
-    arg.enterInScope();
+    arg.enterInScope(ForStatement.class.getSimpleName());
     String variable = forStatement.getVariable().accept(this, arg);
     String initExpr = forStatement.getInitialConditionExpression().accept(this, arg);
     String postCond = forStatement.getLoopConditionExpression().accept(this, arg);
@@ -255,7 +256,7 @@ public class CodeGeneratorConcreteVisitor implements Visitor<String, SymbolTable
 
   @Override
   public String visit(LocalStatement localStatement, SymbolTable arg) {
-    arg.enterInScope();
+    arg.enterInScope(LocalStatement.class.getSimpleName());
     String varDecls = this.beautify(localStatement.getVarDecls(), new StringJoiner("\n"), arg);
     String statements = this.beautify(localStatement.getStatements(), new StringJoiner("\n"), arg);
     arg.exitFromScope();

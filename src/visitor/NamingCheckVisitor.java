@@ -239,7 +239,7 @@ public class NamingCheckVisitor implements Visitor<Boolean, SymbolTable> {
 
     @Override
     public Boolean visit(Program program, SymbolTable arg) {
-        arg.enterInScope();
+        arg.enterInScope(Program.class.getSimpleName());
         boolean areFunctionsOk = this.acceptList(program.getFunctions(), arg);
         arg.exitFromScope();
 
