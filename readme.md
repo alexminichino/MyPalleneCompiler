@@ -1,5 +1,7 @@
 # Mypallene compiler
 
+#### Compiler implemented for university project of Compilers exam
+
 ## Lexical specifications
 
 | FUNCTION     | function                    |
