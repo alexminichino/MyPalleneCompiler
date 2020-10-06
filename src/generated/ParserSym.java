@@ -28,7 +28,7 @@ public class ParserSym {
   public static final int COMMA = 46;
   public static final int BOOL = 18;
   public static final int DIV = 32;
-  public static final int FLOAT_CONST = 51;
+  public static final int FLOAT_CONST = 52;
   public static final int PLUS = 29;
   public static final int ASSIGN = 27;
   public static final int MAIN = 6;
@@ -37,9 +37,10 @@ public class ParserSym {
   public static final int LE = 22;
   public static final int EOF = 0;
   public static final int RETURN = 14;
-  public static final int TRUE = 52;
-  public static final int INT_CONST = 50;
+  public static final int TRUE = 53;
+  public static final int INT_CONST = 51;
   public static final int error = 1;
+  public static final int HAT = 50;
   public static final int GLOBAL = 8;
   public static final int SRPAR = 45;
   public static final int EQ = 23;
@@ -58,7 +59,7 @@ public class ParserSym {
   public static final int LPAR = 40;
   public static final int STRING = 19;
   public static final int LOCAL = 9;
-  public static final int FALSE = 53;
+  public static final int FALSE = 54;
   public static final int STRING_CONST = 20;
   public static final int GT = 25;
   public static final int DO = 13;
@@ -113,6 +114,7 @@ public class ParserSym {
   "SEMI",
   "COLON",
   "UMINUS",
+  "HAT",
   "INT_CONST",
   "FLOAT_CONST",
   "TRUE",

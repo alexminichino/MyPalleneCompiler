@@ -20,6 +20,7 @@ import syntax.expression.unary.NotExpression;
 import syntax.expression.unary.SharpExpression;
 import syntax.expression.unary.UminusExpression;
 import syntax.statements.*;
+import syntax.types.ArrayFloatType;
 import syntax.types.ArrayType;
 import syntax.types.FunctionType;
 import syntax.types.PrimitiveType;
@@ -440,6 +441,10 @@ public class ScopeConcreteVisitor implements Visitor<Boolean, SymbolTable> {
         return true;
     }
 
+    public Boolean visit(ArrayFloatType arrayType, SymbolTable arg) {
+        return true;
+    }
+
     @Override
     public Boolean visit(FunctionType functionType, SymbolTable arg) {
         return true;
@@ -480,5 +485,16 @@ public class ScopeConcreteVisitor implements Visitor<Boolean, SymbolTable> {
     @Override
     public Boolean visit(Variable variable, SymbolTable arg) {
         return !arg.containsLexeme(variable.getValue() );
+    }
+
+
+    @Override
+    public Boolean visit(AssignFloatArrayStatement assignFloatArrayStatement, SymbolTable arg) {
+        boolean isOk = assignFloatArrayStatement.getLeftId().accept(this, arg);
+        isOk &= assignFloatArrayStatement.getRightId().accept(this, arg);
+        if( ! isOk){
+            errorHandler.adderror(new ErrorItem("Assign  statement error", assignFloatArrayStatement));
+        }
+        return isOk;
     }
 }

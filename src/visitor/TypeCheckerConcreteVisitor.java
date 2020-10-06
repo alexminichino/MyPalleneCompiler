@@ -19,6 +19,7 @@ import syntax.expression.unary.NotExpression;
 import syntax.expression.unary.SharpExpression;
 import syntax.expression.unary.UminusExpression;
 import syntax.statements.*;
+import syntax.types.ArrayFloatType;
 import syntax.types.ArrayType;
 import syntax.types.FunctionType;
 import syntax.types.PrimitiveType;
@@ -478,5 +479,21 @@ public class TypeCheckerConcreteVisitor implements Visitor<NodeType, SymbolTable
   @Override
   public NodeType visit(Variable variable, SymbolTable arg) {
     return arg.getTableEntryIfExists(variable.getValue()).get().getNodeType();
+  }
+
+  public NodeType visit(ArrayFloatType arrayType, SymbolTable arg) {
+    return arrayType.typeFactory();
+  }
+
+  @Override
+  public NodeType visit(AssignFloatArrayStatement assignFloatArrayStatement, SymbolTable arg) {
+    NodeType left = assignFloatArrayStatement.getLeftId().accept(this, arg);
+    NodeType right = assignFloatArrayStatement.getRightId().accept(this, arg);
+    if (! ( ((ArrayFloatNodeType)right).getSize() <=  ((ArrayFloatNodeType)left).getSize() )){
+      errorHandler.adderror(new ErrorItem("Size error in FLOAT ARRAY ", assignFloatArrayStatement ));
+    }
+    if(!left.equals(right))
+      errorHandler.adderror(new ErrorItem("Type error in FLOAT ARRAY " + left+ " Expected but found "+ right, assignFloatArrayStatement ));
+    return right;
   }
 }

@@ -1,4 +1,5 @@
 package visitor;
+import nodetype.ArrayFloatNodeType;
 import nodetype.ArrayNodeType;
 import nodetype.NodeType;
 import nodetype.PrimitiveNodeType;
@@ -19,6 +20,7 @@ import syntax.expression.unary.SharpExpression;
 import syntax.expression.unary.UminusExpression;
 import syntax.expression.unary.UnaryOperation;
 import syntax.statements.*;
+import syntax.types.ArrayFloatType;
 import syntax.types.ArrayType;
 import syntax.types.FunctionType;
 import syntax.types.PrimitiveType;
@@ -142,7 +144,15 @@ public class CodeGeneratorConcreteVisitor implements Visitor<String, SymbolTable
   public String visit(VarDecl varDecl, SymbolTable arg) {
     String type = varDecl.getType().accept(this, arg);
     String varName = varDecl.getVariable().accept(this, arg);
-    if(varDecl.getType() instanceof ArrayType) varName = varName + "[60]";
+    if(varDecl.getType() instanceof ArrayType){
+      if (varDecl.getType() instanceof ArrayFloatType){
+
+        varName = varName + "["+((ArrayFloatType)varDecl.getType()).getSize() +"]";
+      }
+      else{
+        varName = varName + "[60]";
+      }
+    }
     if(varDecl.getVarInitValue() != null) {
       String varInitValue = varDecl.getVarInitValue().accept(this, arg);
       return String.format("%s %s = %s;", type, varName, varInitValue);
@@ -164,6 +174,10 @@ public class CodeGeneratorConcreteVisitor implements Visitor<String, SymbolTable
 
   @Override
   public String visit(ArrayType arrayType, SymbolTable arg) {
+    return arrayType.getCType();
+  }
+
+  public String visit(ArrayFloatType arrayType, SymbolTable arg) {
     return arrayType.getCType();
   }
 
@@ -443,5 +457,27 @@ public class CodeGeneratorConcreteVisitor implements Visitor<String, SymbolTable
   @Override
   public String visit(Variable variable, SymbolTable arg) {
     return variable.getName();
+  }
+
+
+  @Override
+  public String visit(AssignFloatArrayStatement assignFloatArrayStatement, SymbolTable arg) {
+    arg.enterInScope(AssignFloatArrayStatement.class.getSimpleName());
+    String left = assignFloatArrayStatement.getLeftId().accept(this,arg);
+    String right = assignFloatArrayStatement.getRightId().accept(this, arg);
+
+    int rightSize = ((ArrayFloatNodeType) assignFloatArrayStatement.getRightId().getNodeType() ).getSize();
+    int leftSize = ((ArrayFloatNodeType) assignFloatArrayStatement.getLeftId().getNodeType() ).getSize();
+
+    String index = "i";
+    String postCond=index+" < "+leftSize;
+    String assign = left+"["+index+"] = "+right+"["+index+"];";
+    String then = "{\n "+ left+"["+index+"] = 0;\n}";
+    String elseS ="{\n "+ assign +"\n}";
+    String statement ="if ("+index+" < count("+right+")) "+elseS+" \n else\n "+then+"\n";
+
+
+    arg.exitFromScope();
+    return String.format("{\nint %s;\nfor(%s = %s; %s ; %s++){\n%s\n}\n}", index, index, "0", postCond, index, statement);
   }
 }

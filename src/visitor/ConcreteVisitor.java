@@ -16,6 +16,7 @@ import syntax.expression.unary.NotExpression;
 import syntax.expression.unary.SharpExpression;
 import syntax.expression.unary.UminusExpression;
 import syntax.statements.*;
+import syntax.types.ArrayFloatType;
 import syntax.types.ArrayType;
 import syntax.types.FunctionType;
 import syntax.types.PrimitiveType;
@@ -381,6 +382,22 @@ public class ConcreteVisitor implements Visitor<Element, Document> {
     @Override
     public Element visit(NopStatement nopStatement, Document arg) {
         Element element = arg.createElement(nopStatement.getClass().getSimpleName());
+        return element;
+    }
+
+    @Override
+    public Element visit(ArrayFloatType arrayType, Document arg) {
+        Element element = arg.createElement(arrayType.getClass().getSimpleName());
+        element.setAttribute("size", arrayType.getSize()+"");
+        element.appendChild((arrayType.getType().accept(this, arg)));
+        return element;
+    }
+
+    @Override
+    public Element visit(AssignFloatArrayStatement assignFloatArrayStatement, Document arg) {
+        Element element = arg.createElement(assignFloatArrayStatement.getClass().getSimpleName());
+        element.appendChild(assignFloatArrayStatement.getLeftId().accept(this, arg));
+        element.appendChild(assignFloatArrayStatement.getRightId().accept(this, arg));
         return element;
     }
 }

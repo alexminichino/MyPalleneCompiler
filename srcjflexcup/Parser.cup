@@ -99,7 +99,8 @@ terminal String IF,
                 COMMA,
                 SEMI,
                 COLON,
-                UMINUS;
+                UMINUS,
+                HAT;
 terminal int INT_CONST;
 terminal float FLOAT_CONST;
 terminal boolean  TRUE, FALSE;
@@ -127,7 +128,7 @@ precedence left PLUS, MINUS, OR;
 precedence left TIMES, DIV, AND;
 precedence nonassoc LT, LE, EQ, NE, GT, GE;
 precedence left UMINUS, NOT, COMMA, SHARP;
-
+precedence left SLPAR;
 /* The grammar */
 
 /* Implicit left (eg functions_xleft) arg indicates the character number from the start of file, this is very useful for error checking */
@@ -261,6 +262,13 @@ Type ::= NIL:nil_
            log("Type : FLOAT");
         :}
        |
+       FLOAT:float_ SLPAR:slpar_ INT_CONST:int_ SRPAR
+        {:
+           PrimitiveType type_= new PrimitiveType(float_xleft, float_xright, "FLOAT");
+           RESULT= new ArrayFloatType(slpar_xleft, slpar_xright, type_, int_);
+           log("Type : FLOAT SLPAR INT_CONST SRPAR");
+        :}
+       |
        STRING:string_
         {:
            RESULT= new PrimitiveType(string_xleft, string_xright, "STRING");
@@ -371,6 +379,12 @@ Stat ::= NOP:nop_
      {:
         RESULT = new AssignStatement(id_xleft, id_xright, new Id(id_xleft, id_xright, id_), expr_);
         log("Stat : ID ASSIGN Expr");
+     :}
+     |
+     ID:id1_ ASSIGN HAT ID:id2_
+     {:
+        RESULT = new AssignFloatArrayStatement(id1_xleft, id1_xright, new Id(id1_xleft, id1_xright, id1_), new Id(id2_xleft, id2_xright, id2_));
+        log("Stat : ID ASSIGN HAT ID");
      :}
      |
      Expr:expr_name_ SLPAR Expr:expr_index_ SRPAR ASSIGN Expr:expr_

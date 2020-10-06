@@ -7,6 +7,7 @@ import syntax.expression.constant.*;
 import syntax.expression.unary.*;
 import syntax.statements.*;
 import syntax.*;
+import syntax.types.ArrayFloatType;
 import syntax.types.ArrayType;
 import syntax.types.FunctionType;
 import syntax.types.PrimitiveType;
@@ -102,4 +103,8 @@ public interface Visitor<T,P> {
     T visit(UminusExpression uminusExpression, P arg);
 
     T visit( Variable variable, P arg);
+
+    T visit(ArrayFloatType arrayType, P arg);
+
+    T visit(AssignFloatArrayStatement assignFloatArrayStatement, P arg);
 }

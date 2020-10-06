@@ -149,6 +149,7 @@ FloatLiteral = (0|[1-9][0-9]*)(\.[0-9]*)?([eE][+\-]?[0-9]+)?
   ","		        { return createToken(ParserSym.COMMA); }
   ";"		        { return createToken(ParserSym.SEMI); }
   ":"		        { return createToken(ParserSym.COLON); }
+  "^"		        { return createToken(ParserSym.HAT); }
 
   /* identifiers */
   {Identifier}      { return createToken(ParserSym.ID, yytext()); } //yytext is used to get the next token from the input

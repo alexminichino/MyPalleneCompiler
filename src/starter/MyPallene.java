@@ -12,6 +12,8 @@ import utils.CUtils;
 import utils.XMLUtils;
 import visitor.*;
 
+import javax.security.auth.callback.TextInputCallback;
+
 public class MyPallene {
 
     private StringTable table;
@@ -81,6 +83,7 @@ public class MyPallene {
             if (errorHandler.hasErrors()) {
                 log("Errors:");
                 log(errorHandler.getErrorStackTrace());
+                System.exit(-1);
             }
 
             symbolTable.reset();

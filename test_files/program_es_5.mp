@@ -1,5 +1,4 @@
 global
-    x : int = 0 ;
     y : int = 0 ;
     operation: int = -1
 end
